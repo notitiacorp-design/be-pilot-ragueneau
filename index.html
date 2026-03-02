@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-    :root{--white:#fff;--gray-bg:#f4f5f7;--gray-border:#e8eaed;--gray-text:#6b7280;--orange:#e8650a;--orange-hover:#d45a08;--orange-light:#f97316;--anthracite:#1f2937;--green-light:#ecfdf5;--green-text:#059669;--red-light:#fef2f2;--red-text:#dc2626}
+    :root{--white:#fff;--gray-bg:#f4f5f7;--gray-border:#e8eaed;--gray-text:#4b5563;--orange:#e8650a;--orange-hover:#d45a08;--orange-light:#f97316;--anthracite:#1f2937;--green-light:#ecfdf5;--green-text:#047857;--red-light:#fef2f2;--red-text:#b91c1c}
     html{scroll-behavior:smooth}
     body{font-family:'Inter',system-ui,-apple-system,sans-serif;color:var(--anthracite);background:var(--white);line-height:1.6;font-size:16px;overflow-x:hidden}
     #progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--orange);z-index:10001;transition:width .1s linear;width:0}
@@ -19,7 +19,7 @@
     .logo{font-size:22px;font-weight:900;color:var(--orange);text-decoration:none;letter-spacing:-.5px}
     .logo span{color:var(--anthracite)}
     .nav{display:flex;align-items:center;gap:32px}
-    .nav a{text-decoration:none;color:var(--gray-text);font-size:14px;font-weight:500;transition:color .2s}
+    .nav a{text-decoration:none;color:#4b5563;font-size:14px;font-weight:500;transition:color .2s}
     .nav a:hover{color:var(--anthracite)}
     .nav .btn-nav{background:var(--orange);color:var(--white);padding:8px 20px;border-radius:6px;font-weight:600;font-size:14px;transition:background .2s}
     .nav .btn-nav:hover{background:var(--orange-hover);color:var(--white)}
@@ -30,7 +30,7 @@
     .section-anthracite{background:var(--anthracite)}
     .section-orange{background:linear-gradient(135deg,var(--orange) 0%,var(--orange-light) 100%)}
     .container{max-width:1140px;margin:0 auto}
-    .section-label{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#c45508;margin-bottom:12px}
+    .section-label{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#b94a06;margin-bottom:12px}
     .section-title{font-size:36px;font-weight:900;color:var(--anthracite);line-height:1.2;margin-bottom:16px;letter-spacing:-.5px}
     .section-subtitle{font-size:18px;color:var(--gray-text);max-width:640px;line-height:1.7}
     .hero{padding:80px 24px 48px;text-align:center}
@@ -65,13 +65,13 @@
     .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;text-align:center}
     .stat-item{color:var(--white)}
     .stat-number{font-size:48px;font-weight:900;line-height:1.1;margin-bottom:8px}
-    .stat-label{font-size:15px;font-weight:500;opacity:.9}
+    .stat-label{font-size:15px;font-weight:500;opacity:.95}
     .comparison-intro{text-align:center;margin-bottom:48px}
     .comparison-intro .section-title{max-width:700px;margin-left:auto;margin-right:auto}
     .comparison-table{width:100%;border-collapse:collapse;border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06)}
     .comparison-table thead th{padding:18px 24px;font-size:15px;font-weight:800;text-align:left;background:var(--anthracite);color:var(--white)}
     .comparison-table thead th:first-child{width:30%}
-    .comparison-table thead th.col-competitor{color:var(--gray-text);background:var(--anthracite)}
+    .comparison-table thead th.col-competitor{color:#9ca3af}
     .comparison-table thead th.col-bepilot{color:var(--orange-light)}
     .comparison-table tbody td{padding:16px 24px;font-size:15px;border-bottom:1px solid var(--gray-border);vertical-align:middle}
     .comparison-table tbody tr:last-child td{border-bottom:none}
@@ -85,13 +85,13 @@
     .process-step p{font-size:14px;color:var(--gray-text);line-height:1.6}
     .cta-final{text-align:center;padding:64px 24px}
     .cta-final .section-title{color:var(--white);margin-bottom:12px}
-    .cta-final .section-subtitle{color:#9ca3af;margin:0 auto 36px;text-align:center}
+    .cta-final .section-subtitle{color:#d1d5db;margin:0 auto 36px;text-align:center}
     .cta-final .btn-primary{font-size:18px;padding:16px 40px;margin-bottom:32px}
-    .cta-contact{color:#9ca3af;font-size:15px;line-height:1.8}
+    .cta-contact{color:#d1d5db;font-size:15px;line-height:1.8}
     .cta-contact strong{color:var(--white);font-weight:700}
     .cta-contact a{color:var(--orange-light);text-decoration:none}
     .cta-contact a:hover{text-decoration:underline}
-    .footer{background:#111827;padding:24px;text-align:center;font-size:13px;color:#6b7280;border-top:1px solid #374151}
+    .footer{background:#111827;padding:24px;text-align:center;font-size:13px;color:#9ca3af;border-top:1px solid #374151}
     .fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
     .fade-in.visible{opacity:1;transform:translateY(0)}
     @media(max-width:968px){
