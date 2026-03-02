@@ -4,1078 +4,209 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BE Pilot | Gestion de Projets Cuisine Professionnelle</title>
-  <meta name="description" content="BE Pilot : l'outil de suivi concu pour les equipes qui installent et maintiennent des cuisines professionnelles. De la commande a la reception.">
+  <meta name="description" content="BE Pilot : l'outil de suivi pour les equipes qui installent et maintiennent des cuisines professionnelles.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --white: #ffffff;
-      --gray-bg: #f4f5f7;
-      --gray-border: #e8eaed;
-      --gray-text: #6b7280;
-      --orange: #e8650a;
-      --orange-hover: #d45a08;
-      --orange-light: #f97316;
-      --anthracite: #1f2937;
-      --green-light: #ecfdf5;
-      --green-text: #059669;
-      --red-light: #fef2f2;
-      --red-text: #dc2626;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      color: var(--anthracite);
-      background: var(--white);
-      line-height: 1.6;
-      font-size: 16px;
-      overflow-x: hidden;
-    }
-
-    /* Reading progress bar */
-    #progress-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 3px;
-      background: var(--orange);
-      z-index: 10001;
-      transition: width 0.1s linear;
-      width: 0%;
-    }
-
-    /* Header */
-    .header {
-      position: sticky;
-      top: 0;
-      background: var(--white);
-      border-bottom: 1px solid var(--gray-border);
-      z-index: 10000;
-      padding: 0 24px;
-    }
-
-    .header-inner {
-      max-width: 1140px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
-    }
-
-    .logo {
-      font-size: 22px;
-      font-weight: 900;
-      color: var(--orange);
-      text-decoration: none;
-      letter-spacing: -0.5px;
-    }
-
-    .logo span {
-      color: var(--anthracite);
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-    }
-
-    .nav a {
-      text-decoration: none;
-      color: var(--gray-text);
-      font-size: 14px;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-
-    .nav a:hover {
-      color: var(--anthracite);
-    }
-
-    .nav .btn-nav {
-      background: var(--orange);
-      color: var(--white);
-      padding: 8px 20px;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 14px;
-      transition: background 0.2s;
-    }
-
-    .nav .btn-nav:hover {
-      background: var(--orange-hover);
-      color: var(--white);
-    }
-
-    .mobile-toggle {
-      display: none;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
-    }
-
-    .mobile-toggle svg {
-      width: 24px;
-      height: 24px;
-      stroke: var(--anthracite);
-    }
-
-    /* Sections */
-    .section {
-      padding: 80px 24px;
-    }
-
-    .section-gray {
-      background: var(--gray-bg);
-    }
-
-    .section-anthracite {
-      background: var(--anthracite);
-    }
-
-    .section-orange {
-      background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%);
-    }
-
-    .container {
-      max-width: 1140px;
-      margin: 0 auto;
-    }
-
-    .section-label {
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--orange);
-      margin-bottom: 12px;
-    }
-
-    .section-title {
-      font-size: 36px;
-      font-weight: 900;
-      color: var(--anthracite);
-      line-height: 1.2;
-      margin-bottom: 16px;
-      letter-spacing: -0.5px;
-    }
-
-    .section-subtitle {
-      font-size: 18px;
-      color: var(--gray-text);
-      max-width: 640px;
-      line-height: 1.7;
-    }
-
-    /* Hero */
-    .hero {
-      padding: 100px 24px 60px;
-      text-align: center;
-    }
-
-    .hero .section-label {
-      margin-bottom: 16px;
-    }
-
-    .hero-title {
-      font-size: 48px;
-      font-weight: 900;
-      color: var(--anthracite);
-      line-height: 1.15;
-      margin-bottom: 20px;
-      letter-spacing: -1px;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .hero-subtitle {
-      font-size: 20px;
-      color: var(--gray-text);
-      max-width: 600px;
-      margin: 0 auto 36px;
-      line-height: 1.7;
-    }
-
-    .hero-cta {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 0;
-    }
-
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--orange);
-      color: var(--white);
-      padding: 14px 32px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 16px;
-      transition: background 0.2s, transform 0.2s;
-      border: 2px solid var(--orange);
-    }
-
-    .btn-primary:hover {
-      background: var(--orange-hover);
-      border-color: var(--orange-hover);
-      transform: translateY(-1px);
-    }
-
-    .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: transparent;
-      color: var(--orange);
-      padding: 14px 32px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 16px;
-      border: 2px solid var(--orange);
-      transition: background 0.2s, transform 0.2s;
-    }
-
-    .btn-secondary:hover {
-      background: rgba(232, 101, 10, 0.06);
-      transform: translateY(-1px);
-    }
-
-    /* Reassurance banner */
-    .reassurance {
-      padding: 40px 24px;
-      border-top: 1px solid var(--gray-border);
-      border-bottom: 1px solid var(--gray-border);
-      background: var(--gray-bg);
-    }
-
-    .reassurance-grid {
-      max-width: 1140px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
-      text-align: center;
-    }
-
-    .reassurance-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .reassurance-icon {
-      width: 44px;
-      height: 44px;
-      background: var(--white);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid var(--gray-border);
-    }
-
-    .reassurance-icon svg {
-      width: 22px;
-      height: 22px;
-      stroke: var(--orange);
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .reassurance-text {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--anthracite);
-    }
-
-    /* Problem cards */
-    .problems-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
-      margin-top: 48px;
-    }
-
-    .problem-card {
-      background: var(--white);
-      border: 1px solid var(--gray-border);
-      border-left: 4px solid var(--orange);
-      border-radius: 8px;
-      padding: 28px;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .problem-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    }
-
-    .problem-card-icon {
-      width: 44px;
-      height: 44px;
-      background: rgba(232, 101, 10, 0.08);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 16px;
-    }
-
-    .problem-card-icon svg {
-      width: 22px;
-      height: 22px;
-      stroke: var(--orange);
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .problem-card h3 {
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--anthracite);
-      margin-bottom: 8px;
-    }
-
-    .problem-card p {
-      font-size: 15px;
-      color: var(--gray-text);
-      line-height: 1.6;
-    }
-
-    /* Solution cards */
-    .solution-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      margin-top: 48px;
-    }
-
-    .solution-card {
-      background: var(--white);
-      border: 1px solid var(--gray-border);
-      border-radius: 8px;
-      padding: 28px;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .solution-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    }
-
-    .solution-card-icon {
-      width: 48px;
-      height: 48px;
-      background: rgba(232, 101, 10, 0.08);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 16px;
-    }
-
-    .solution-card-icon svg {
-      width: 24px;
-      height: 24px;
-      stroke: var(--orange);
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .solution-card h3 {
-      font-size: 17px;
-      font-weight: 800;
-      color: var(--anthracite);
-      margin-bottom: 8px;
-    }
-
-    .solution-card p {
-      font-size: 15px;
-      color: var(--gray-text);
-      line-height: 1.6;
-    }
-
-    /* Stats section */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 32px;
-      text-align: center;
-    }
-
-    .stat-item {
-      color: var(--white);
-    }
-
-    .stat-number {
-      font-size: 48px;
-      font-weight: 900;
-      line-height: 1.1;
-      margin-bottom: 8px;
-    }
-
-    .stat-label {
-      font-size: 15px;
-      font-weight: 500;
-      opacity: 0.9;
-    }
-
-    /* Comparison table */
-    .comparison-intro {
-      text-align: center;
-      margin-bottom: 48px;
-    }
-
-    .comparison-intro .section-title {
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .comparison-table {
-      width: 100%;
-      border-collapse: collapse;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    }
-
-    .comparison-table thead th {
-      padding: 18px 24px;
-      font-size: 15px;
-      font-weight: 800;
-      text-align: left;
-      background: var(--anthracite);
-      color: var(--white);
-    }
-
-    .comparison-table thead th:first-child {
-      width: 30%;
-    }
-
-    .comparison-table thead th.col-competitor {
-      color: var(--gray-text);
-      background: var(--anthracite);
-    }
-
-    .comparison-table thead th.col-bepilot {
-      color: var(--orange-light);
-    }
-
-    .comparison-table tbody td {
-      padding: 16px 24px;
-      font-size: 15px;
-      border-bottom: 1px solid var(--gray-border);
-      vertical-align: middle;
-    }
-
-    .comparison-table tbody tr:last-child td {
-      border-bottom: none;
-    }
-
-    .comparison-table tbody td:first-child {
-      font-weight: 700;
-      color: var(--anthracite);
-    }
-
-    .comparison-table .cell-negative {
-      background: var(--red-light);
-      color: var(--red-text);
-      font-weight: 600;
-    }
-
-    .comparison-table .cell-positive {
-      background: var(--green-light);
-      color: var(--green-text);
-      font-weight: 600;
-    }
-
-    /* Process steps */
-    .process-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
-      margin-top: 48px;
-    }
-
-    .process-step {
-      text-align: center;
-      position: relative;
-    }
-
-    .process-number {
-      width: 56px;
-      height: 56px;
-      background: var(--orange);
-      color: var(--white);
-      font-size: 22px;
-      font-weight: 900;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-    }
-
-    .process-step h3 {
-      font-size: 17px;
-      font-weight: 800;
-      color: var(--anthracite);
-      margin-bottom: 8px;
-    }
-
-    .process-step p {
-      font-size: 14px;
-      color: var(--gray-text);
-      line-height: 1.6;
-    }
-
-    .process-connector {
-      display: none;
-    }
-
-    /* CTA Final */
-    .cta-final {
-      text-align: center;
-      padding: 80px 24px;
-    }
-
-    .cta-final .section-title {
-      color: var(--white);
-      margin-bottom: 12px;
-    }
-
-    .cta-final .section-subtitle {
-      color: #9ca3af;
-      margin: 0 auto 36px;
-      text-align: center;
-    }
-
-    .cta-final .btn-primary {
-      font-size: 18px;
-      padding: 16px 40px;
-      margin-bottom: 32px;
-    }
-
-    .cta-contact {
-      color: #9ca3af;
-      font-size: 15px;
-      line-height: 1.8;
-    }
-
-    .cta-contact strong {
-      color: var(--white);
-      font-weight: 700;
-    }
-
-    .cta-contact a {
-      color: var(--orange-light);
-      text-decoration: none;
-    }
-
-    .cta-contact a:hover {
-      text-decoration: underline;
-    }
-
-    /* Footer */
-    .footer {
-      background: #111827;
-      padding: 24px;
-      text-align: center;
-      font-size: 13px;
-      color: #6b7280;
-      border-top: 1px solid #374151;
-    }
-
-    /* Fade-in animations */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Responsive */
+      --white: #ffffff; --gray-bg: #f4f5f7; --gray-border: #e8eaed; --gray-text: #6b7280;
+      --orange: #e8650a; --orange-hover: #d45a08; --orange-light: #f97316; --anthracite: #1f2937;
+      --green-light: #ecfdf5; --green-text: #059669; --red-light: #fef2f2; --red-text: #dc2626;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; color: var(--anthracite); background: var(--white); line-height: 1.6; font-size: 16px; overflow-x: hidden; }
+    #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--orange); z-index: 10001; transition: width 0.1s linear; width: 0%; }
+    .header { position: sticky; top: 0; background: var(--white); border-bottom: 1px solid var(--gray-border); z-index: 10000; padding: 0 24px; }
+    .header-inner { max-width: 1140px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .logo { font-size: 22px; font-weight: 900; color: var(--orange); text-decoration: none; letter-spacing: -0.5px; }
+    .logo span { color: var(--anthracite); }
+    .nav { display: flex; align-items: center; gap: 32px; }
+    .nav a { text-decoration: none; color: var(--gray-text); font-size: 14px; font-weight: 500; transition: color 0.2s; }
+    .nav a:hover { color: var(--anthracite); }
+    .nav .btn-nav { background: var(--orange); color: var(--white); padding: 8px 20px; border-radius: 6px; font-weight: 600; font-size: 14px; transition: background 0.2s; }
+    .nav .btn-nav:hover { background: var(--orange-hover); color: var(--white); }
+    .mobile-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+    .mobile-toggle svg { width: 24px; height: 24px; stroke: var(--anthracite); }
+    .section { padding: 80px 24px; }
+    .section-gray { background: var(--gray-bg); }
+    .section-anthracite { background: var(--anthracite); }
+    .section-orange { background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%); }
+    .container { max-width: 1140px; margin: 0 auto; }
+    .section-label { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--orange); margin-bottom: 12px; }
+    .section-title { font-size: 36px; font-weight: 900; color: var(--anthracite); line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px; }
+    .section-subtitle { font-size: 18px; color: var(--gray-text); max-width: 640px; line-height: 1.7; }
+    .hero { padding: 100px 24px 60px; text-align: center; }
+    .hero .section-label { margin-bottom: 16px; }
+    .hero-title { font-size: 48px; font-weight: 900; color: var(--anthracite); line-height: 1.15; margin-bottom: 20px; letter-spacing: -1px; max-width: 800px; margin-left: auto; margin-right: auto; }
+    .hero-subtitle { font-size: 20px; color: var(--gray-text); max-width: 600px; margin: 0 auto 36px; line-height: 1.7; }
+    .hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--orange); color: var(--white); padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 16px; transition: background 0.2s, transform 0.2s; border: 2px solid var(--orange); }
+    .btn-primary:hover { background: var(--orange-hover); border-color: var(--orange-hover); transform: translateY(-1px); }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--orange); padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 16px; border: 2px solid var(--orange); transition: background 0.2s, transform 0.2s; }
+    .btn-secondary:hover { background: rgba(232, 101, 10, 0.06); transform: translateY(-1px); }
+    .reassurance { padding: 40px 24px; border-top: 1px solid var(--gray-border); border-bottom: 1px solid var(--gray-border); background: var(--gray-bg); }
+    .reassurance-grid { max-width: 1140px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; text-align: center; }
+    .reassurance-item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .reassurance-icon { width: 44px; height: 44px; background: var(--white); border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--gray-border); }
+    .reassurance-icon svg { width: 22px; height: 22px; stroke: var(--orange); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .reassurance-text { font-size: 15px; font-weight: 700; color: var(--anthracite); }
+    .problems-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 48px; }
+    .problem-card { background: var(--white); border: 1px solid var(--gray-border); border-left: 4px solid var(--orange); border-radius: 8px; padding: 28px; transition: transform 0.2s, box-shadow 0.2s; }
+    .problem-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .problem-card-icon { width: 44px; height: 44px; background: rgba(232, 101, 10, 0.08); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .problem-card-icon svg { width: 22px; height: 22px; stroke: var(--orange); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .problem-card h3 { font-size: 18px; font-weight: 800; color: var(--anthracite); margin-bottom: 8px; }
+    .problem-card p { font-size: 15px; color: var(--gray-text); line-height: 1.6; }
+    .solution-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+    .solution-card { background: var(--white); border: 1px solid var(--gray-border); border-radius: 8px; padding: 28px; transition: transform 0.2s, box-shadow 0.2s; }
+    .solution-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .solution-card-icon { width: 48px; height: 48px; background: rgba(232, 101, 10, 0.08); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .solution-card-icon svg { width: 24px; height: 24px; stroke: var(--orange); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .solution-card h3 { font-size: 17px; font-weight: 800; color: var(--anthracite); margin-bottom: 8px; }
+    .solution-card p { font-size: 15px; color: var(--gray-text); line-height: 1.6; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; text-align: center; }
+    .stat-item { color: var(--white); }
+    .stat-number { font-size: 48px; font-weight: 900; line-height: 1.1; margin-bottom: 8px; }
+    .stat-label { font-size: 15px; font-weight: 500; opacity: 0.9; }
+    .comparison-intro { text-align: center; margin-bottom: 48px; }
+    .comparison-intro .section-title { max-width: 700px; margin-left: auto; margin-right: auto; }
+    .comparison-table { width: 100%; border-collapse: collapse; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .comparison-table thead th { padding: 18px 24px; font-size: 15px; font-weight: 800; text-align: left; background: var(--anthracite); color: var(--white); }
+    .comparison-table thead th:first-child { width: 30%; }
+    .comparison-table thead th.col-competitor { color: var(--gray-text); background: var(--anthracite); }
+    .comparison-table thead th.col-bepilot { color: var(--orange-light); }
+    .comparison-table tbody td { padding: 16px 24px; font-size: 15px; border-bottom: 1px solid var(--gray-border); vertical-align: middle; }
+    .comparison-table tbody tr:last-child td { border-bottom: none; }
+    .comparison-table tbody td:first-child { font-weight: 700; color: var(--anthracite); }
+    .comparison-table .cell-negative { background: var(--red-light); color: var(--red-text); font-weight: 600; }
+    .comparison-table .cell-positive { background: var(--green-light); color: var(--green-text); font-weight: 600; }
+    .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 48px; }
+    .process-step { text-align: center; }
+    .process-number { width: 56px; height: 56px; background: var(--orange); color: var(--white); font-size: 22px; font-weight: 900; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+    .process-step h3 { font-size: 17px; font-weight: 800; color: var(--anthracite); margin-bottom: 8px; }
+    .process-step p { font-size: 14px; color: var(--gray-text); line-height: 1.6; }
+    .cta-final { text-align: center; padding: 80px 24px; }
+    .cta-final .section-title { color: var(--white); margin-bottom: 12px; }
+    .cta-final .section-subtitle { color: #9ca3af; margin: 0 auto 36px; text-align: center; }
+    .cta-final .btn-primary { font-size: 18px; padding: 16px 40px; margin-bottom: 32px; }
+    .cta-contact { color: #9ca3af; font-size: 15px; line-height: 1.8; }
+    .cta-contact strong { color: var(--white); font-weight: 700; }
+    .cta-contact a { color: var(--orange-light); text-decoration: none; }
+    .cta-contact a:hover { text-decoration: underline; }
+    .footer { background: #111827; padding: 24px; text-align: center; font-size: 13px; color: #6b7280; border-top: 1px solid #374151; }
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
     @media (max-width: 968px) {
-      .nav {
-        display: none;
-        position: absolute;
-        top: 64px;
-        left: 0;
-        right: 0;
-        background: var(--white);
-        flex-direction: column;
-        padding: 24px;
-        gap: 20px;
-        border-bottom: 1px solid var(--gray-border);
-        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-      }
-
-      .nav.open {
-        display: flex;
-      }
-
-      .mobile-toggle {
-        display: block;
-      }
-
-      .hero-title {
-        font-size: 32px;
-      }
-
-      .hero-subtitle {
-        font-size: 17px;
-      }
-
-      .section-title {
-        font-size: 28px;
-      }
-
-      .problems-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .solution-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 24px;
-      }
-
-      .stat-number {
-        font-size: 36px;
-      }
-
-      .process-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .reassurance-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-
-      .comparison-table {
-        font-size: 13px;
-      }
-
-      .comparison-table thead th,
-      .comparison-table tbody td {
-        padding: 12px 14px;
-      }
+      .nav { display: none; position: absolute; top: 64px; left: 0; right: 0; background: var(--white); flex-direction: column; padding: 24px; gap: 20px; border-bottom: 1px solid var(--gray-border); box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+      .nav.open { display: flex; }
+      .mobile-toggle { display: block; }
+      .hero-title { font-size: 32px; }
+      .hero-subtitle { font-size: 17px; }
+      .section-title { font-size: 28px; }
+      .problems-grid { grid-template-columns: 1fr; }
+      .solution-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+      .stat-number { font-size: 36px; }
+      .process-grid { grid-template-columns: repeat(2, 1fr); }
+      .reassurance-grid { grid-template-columns: 1fr; gap: 20px; }
+      .comparison-table { font-size: 13px; }
+      .comparison-table thead th, .comparison-table tbody td { padding: 12px 14px; }
     }
-
     @media (max-width: 600px) {
-      .hero {
-        padding: 60px 24px 40px;
-      }
-
-      .section {
-        padding: 56px 16px;
-      }
-
-      .hero-title {
-        font-size: 28px;
-      }
-
-      .hero-cta {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .btn-primary, .btn-secondary {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .process-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .comparison-table thead th:first-child,
-      .comparison-table tbody td:first-child {
-        width: auto;
-      }
+      .hero { padding: 60px 24px 40px; }
+      .section { padding: 56px 16px; }
+      .hero-title { font-size: 28px; }
+      .hero-cta { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .process-grid { grid-template-columns: 1fr; }
+      .comparison-table thead th:first-child, .comparison-table tbody td:first-child { width: auto; }
     }
   </style>
 </head>
 <body>
-
-<!-- Progress Bar -->
 <div id="progress-bar"></div>
+<header class="header"><div class="header-inner"><a href="#" class="logo">BE <span>Pilot</span></a><nav class="nav" id="mainNav"><a href="#problemes">Probl&#232;mes</a><a href="#solution">Solution</a><a href="#comparatif">Comparatif</a><a href="#processus">Processus</a><a href="#contact" class="btn-nav">Demander une d&#233;mo</a></nav><button class="mobile-toggle" id="mobileToggle" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button></div></header>
+<section class="hero"><div class="container">
+<p class="section-label fade-in">Gestion de projets cuisine professionnelle</p>
+<h1 class="hero-title fade-in">Pilotez chaque installation. De la commande &#224; la r&#233;ception.</h1>
+<p class="hero-subtitle fade-in">Un outil de suivi con&#231;u pour les &#233;quipes qui installent et maintiennent des cuisines professionnelles.</p>
+<div class="hero-cta fade-in"><a href="#contact" class="btn-primary">Demander une d&#233;mo</a><a href="#solution" class="btn-secondary">Voir comment &#231;a marche</a></div>
+</div></section>
 
-<!-- Header -->
-<header class="header">
-  <div class="header-inner">
-    <a href="#" class="logo">BE <span>Pilot</span></a>
-    <nav class="nav" id="mainNav">
-      <a href="#problemes">ProblÃ¨mes</a>
-      <a href="#solution">Solution</a>
-      <a href="#comparatif">Comparatif</a>
-      <a href="#processus">Processus</a>
-      <a href="#contact" class="btn-nav">Demander une dÃ©mo</a>
-    </nav>
-    <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="3" y1="6" x2="21" y2="6"/>
-        <line x1="3" y1="12" x2="21" y2="12"/>
-        <line x1="3" y1="18" x2="21" y2="18"/>
-      </svg>
-    </button>
-  </div>
-</header>
+<div class="reassurance"><div class="reassurance-grid">
+<div class="reassurance-item fade-in"><div class="reassurance-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><span class="reassurance-text">D&#233;ploy&#233; en 2 semaines</span></div>
+<div class="reassurance-item fade-in"><div class="reassurance-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="reassurance-text">100% personnalis&#233;</span></div>
+<div class="reassurance-item fade-in"><div class="reassurance-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><span class="reassurance-text">Support local</span></div>
+</div></div>
 
-<!-- Hero -->
-<section class="hero">
-  <div class="container">
-    <p class="section-label fade-in">Gestion de projets cuisine professionnelle</p>
-    <h1 class="hero-title fade-in">Pilotez chaque installation. De la commande Ã  la rÃ©ception.</h1>
-    <p class="hero-subtitle fade-in">Un outil de suivi conÃ§u pour les Ã©quipes qui installent et maintiennent des cuisines professionnelles.</p>
-    <div class="hero-cta fade-in">
-      <a href="#contact" class="btn-primary">Demander une dÃ©mo</a>
-      <a href="#solution" class="btn-secondary">Voir comment Ã§a marche</a>
-    </div>
-  </div>
-</section>
+<section class="section section-gray" id="problemes"><div class="container">
+<p class="section-label fade-in">Constat</p>
+<h2 class="section-title fade-in">Votre m&#233;tier est complexe. Vos outils ne suivent pas.</h2>
+<p class="section-subtitle fade-in">Les entreprises d'installation de cuisines professionnelles jonglent entre commercial, montage et SAV avec des outils inadapt&#233;s.</p>
+<div class="problems-grid">
+<div class="problem-card fade-in"><div class="problem-card-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></div><h3>Coordination fragment&#233;e</h3><p>Commercial, montage et SAV travaillent en silos. Informations perdues entre les &#233;quipes.</p></div>
+<div class="problem-card fade-in"><div class="problem-card-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><h3>Planning techniciens manuel</h3><p>Interventions g&#233;r&#233;es par t&#233;l&#233;phone et tableur. Conflits et oublis fr&#233;quents.</p></div>
+<div class="problem-card fade-in"><div class="problem-card-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div><h3>Suivi maintenance r&#233;glementaire</h3><p>Contrats et contr&#244;les obligatoires (fluides frigorig&#232;nes, CERFA) suivis &#224; la main.</p></div>
+<div class="problem-card fade-in"><div class="problem-card-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div><h3>Aucune vision consolid&#233;e</h3><p>Impossible de voir en un coup d'&#339;il l'&#233;tat de tous vos projets en cours.</p></div>
+</div></div></section>
 
-<!-- Reassurance -->
-<div class="reassurance">
-  <div class="reassurance-grid">
-    <div class="reassurance-item fade-in">
-      <div class="reassurance-icon">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      </div>
-      <span class="reassurance-text">DÃ©ployÃ© en 2 semaines</span>
-    </div>
-    <div class="reassurance-item fade-in">
-      <div class="reassurance-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      </div>
-      <span class="reassurance-text">100% personnalisÃ©</span>
-    </div>
-    <div class="reassurance-item fade-in">
-      <div class="reassurance-icon">
-        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      </div>
-      <span class="reassurance-text">Support local</span>
-    </div>
-  </div>
-</div>
+<section class="section" id="solution"><div class="container">
+<p class="section-label fade-in">Solution</p>
+<h2 class="section-title fade-in">BE Pilot connecte vos &#233;quipes sur un seul outil</h2>
+<p class="section-subtitle fade-in">Cinq modules int&#233;gr&#233;s pour couvrir l'ensemble de votre activit&#233;, du devis au SAV.</p>
+<div class="solution-grid">
+<div class="solution-card fade-in"><div class="solution-card-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></div><h3>Pilotage projet</h3><p>De l'&#233;tude &#224; la r&#233;ception, chaque &#233;tape trac&#233;e avec historique complet.</p></div>
+<div class="solution-card fade-in"><div class="solution-card-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><h3>Planning techniciens</h3><p>Affectation, d&#233;placements, disponibilit&#233;s en temps r&#233;el pour toute l'&#233;quipe.</p></div>
+<div class="solution-card fade-in"><div class="solution-card-icon"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div><h3>SAV et Maintenance</h3><p>Contrats, interventions, historique par &#233;quipement centralis&#233;s.</p></div>
+<div class="solution-card fade-in"><div class="solution-card-icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div><h3>Tra&#231;abilit&#233; r&#233;glementaire</h3><p>CERFA, fluides frigorig&#232;nes, contr&#244;les obligatoires : tout est suivi.</p></div>
+<div class="solution-card fade-in"><div class="solution-card-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><h3>Reporting direction</h3><p>Vision consolid&#233;e de tous les chantiers, marges et d&#233;lais en un clic.</p></div>
+</div></div></section>
 
-<!-- ProblÃ¨mes -->
-<section class="section section-gray" id="problemes">
-  <div class="container">
-    <p class="section-label fade-in">Constat</p>
-    <h2 class="section-title fade-in">Votre mÃ©tier est complexe. Vos outils ne suivent pas.</h2>
-    <p class="section-subtitle fade-in">Les entreprises d'installation de cuisines professionnelles jonglent entre commercial, montage et SAV avec des outils inadaptÃ©s.</p>
-    <div class="problems-grid">
-      <div class="problem-card fade-in">
-        <div class="problem-card-icon">
-          <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
-        </div>
-        <h3>Coordination fragmentÃ©e</h3>
-        <p>Commercial, montage et SAV travaillent en silos. Informations perdues entre les Ã©quipes.</p>
-      </div>
-      <div class="problem-card fade-in">
-        <div class="problem-card-icon">
-          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        </div>
-        <h3>Planning techniciens manuel</h3>
-        <p>Interventions gÃ©rÃ©es par tÃ©lÃ©phone et tableur. Conflits et oublis frÃ©quents.</p>
-      </div>
-      <div class="problem-card fade-in">
-        <div class="problem-card-icon">
-          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        </div>
-        <h3>Suivi maintenance rÃ©glementaire</h3>
-        <p>Contrats et contrÃ´les obligatoires (fluides frigorigÃ¨nes, CERFA) suivis Ã  la main.</p>
-      </div>
-      <div class="problem-card fade-in">
-        <div class="problem-card-icon">
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-        </div>
-        <h3>Aucune vision consolidÃ©e</h3>
-        <p>Impossible de voir en un coup d'Åil l'Ã©tat de tous vos projets en cours.</p>
-      </div>
-    </div>
-  </div>
-</section>
+<section class="section section-orange" id="stats"><div class="container"><div class="stats-grid">
+<div class="stat-item fade-in"><div class="stat-number"><span class="counter" data-target="45">0</span>%</div><div class="stat-label">de temps admin &#233;conomis&#233;</div></div>
+<div class="stat-item fade-in"><div class="stat-number"><span class="counter" data-target="3">0</span>x</div><div class="stat-label">moins d'erreurs de planning</div></div>
+<div class="stat-item fade-in"><div class="stat-number"><span class="counter" data-target="100">0</span>%</div><div class="stat-label">de conformit&#233; r&#233;glementaire</div></div>
+<div class="stat-item fade-in"><div class="stat-number">ROI en <span class="counter" data-target="6">0</span> mois</div><div class="stat-label">retour sur investissement rapide</div></div>
+</div></div></section>
 
-<!-- Solution -->
-<section class="section" id="solution">
-  <div class="container">
-    <p class="section-label fade-in">Solution</p>
-    <h2 class="section-title fade-in">BE Pilot connecte vos Ã©quipes sur un seul outil</h2>
-    <p class="section-subtitle fade-in">Cinq modules intÃ©grÃ©s pour couvrir l'ensemble de votre activitÃ©, du devis au SAV.</p>
-    <div class="solution-grid">
-      <div class="solution-card fade-in">
-        <div class="solution-card-icon">
-          <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
-        </div>
-        <h3>Pilotage projet</h3>
-        <p>De l'Ã©tude Ã  la rÃ©ception, chaque Ã©tape tracÃ©e avec historique complet.</p>
-      </div>
-      <div class="solution-card fade-in">
-        <div class="solution-card-icon">
-          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        </div>
-        <h3>Planning techniciens</h3>
-        <p>Affectation, dÃ©placements, disponibilitÃ©s en temps rÃ©el pour toute l'Ã©quipe.</p>
-      </div>
-      <div class="solution-card fade-in">
-        <div class="solution-card-icon">
-          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
-        </div>
-        <h3>SAV et Maintenance</h3>
-        <p>Contrats, interventions, historique par Ã©quipement centralisÃ©s.</p>
-      </div>
-      <div class="solution-card fade-in">
-        <div class="solution-card-icon">
-          <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-        </div>
-        <h3>TraÃ§abilitÃ© rÃ©glementaire</h3>
-        <p>CERFA, fluides frigorigÃ¨nes, contrÃ´les obligatoires : tout est suivi.</p>
-      </div>
-      <div class="solution-card fade-in">
-        <div class="solution-card-icon">
-          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        </div>
-        <h3>Reporting direction</h3>
-        <p>Vision consolidÃ©e de tous les chantiers, marges et dÃ©lais en un clic.</p>
-      </div>
-    </div>
-  </div>
-</section>
+<section class="section" id="comparatif"><div class="container">
+<div class="comparison-intro fade-in"><p class="section-label">Comparatif</p><h2 class="section-title">5x moins cher qu'Orgasoftware. 100% adapt&#233; &#224; votre m&#233;tier.</h2></div>
+<div class="fade-in" style="overflow-x:auto;"><table class="comparison-table"><thead><tr><th>Crit&#232;re</th><th class="col-competitor">Orgasoftware</th><th class="col-bepilot">BE Pilot</th></tr></thead><tbody>
+<tr><td>Prix</td><td class="cell-negative">~800 &#8364;/mois</td><td class="cell-positive">150 &#8364;/mois</td></tr>
+<tr><td>D&#233;ploiement</td><td class="cell-negative">4-6 mois</td><td class="cell-positive">2 semaines</td></tr>
+<tr><td>Personnalisation</td><td class="cell-negative">G&#233;n&#233;rique</td><td class="cell-positive">100% sur-mesure</td></tr>
+<tr><td>Support</td><td class="cell-negative">Hotline nationale</td><td class="cell-positive">Local et r&#233;actif</td></tr>
+<tr><td>Formation</td><td class="cell-negative">Plusieurs semaines</td><td class="cell-positive">1 journ&#233;e</td></tr>
+</tbody></table></div></div></section>
 
-<!-- Stats -->
-<section class="section section-orange" id="stats">
-  <div class="container">
-    <div class="stats-grid">
-      <div class="stat-item fade-in">
-        <div class="stat-number"><span class="counter" data-target="45">0</span>%</div>
-        <div class="stat-label">de temps admin Ã©conomisÃ©</div>
-      </div>
-      <div class="stat-item fade-in">
-        <div class="stat-number"><span class="counter" data-target="3">0</span>x</div>
-        <div class="stat-label">moins d'erreurs de planning</div>
-      </div>
-      <div class="stat-item fade-in">
-        <div class="stat-number"><span class="counter" data-target="100">0</span>%</div>
-        <div class="stat-label">de conformitÃ© rÃ©glementaire</div>
-      </div>
-      <div class="stat-item fade-in">
-        <div class="stat-number">ROI en <span class="counter" data-target="6">0</span> mois</div>
-        <div class="stat-label">retour sur investissement rapide</div>
-      </div>
-    </div>
-  </div>
-</section>
+<section class="section section-gray" id="processus"><div class="container">
+<div class="fade-in" style="text-align:center;margin-bottom:8px;"><p class="section-label">D&#233;marrage</p><h2 class="section-title" style="max-width:600px;margin-left:auto;margin-right:auto;">Op&#233;rationnel en 2 semaines</h2><p class="section-subtitle" style="margin:0 auto;">Un processus simple et rapide pour ne pas perturber votre activit&#233;.</p></div>
+<div class="process-grid">
+<div class="process-step fade-in"><div class="process-number">1</div><h3>Audit gratuit</h3><p>On analyse vos processus en 48h pour identifier les gains rapides.</p></div>
+<div class="process-step fade-in"><div class="process-number">2</div><h3>Prototype</h3><p>Vous validez la solution avant tout d&#233;veloppement.</p></div>
+<div class="process-step fade-in"><div class="process-number">3</div><h3>D&#233;veloppement</h3><p>Votre outil sur-mesure construit en moins de 2 semaines.</p></div>
+<div class="process-step fade-in"><div class="process-number">4</div><h3>D&#233;ploiement</h3><p>Formation &#233;quipe + support continu pour garantir l'adoption.</p></div>
+</div></div></section>
 
-<!-- Comparatif -->
-<section class="section" id="comparatif">
-  <div class="container">
-    <div class="comparison-intro fade-in">
-      <p class="section-label">Comparatif</p>
-      <h2 class="section-title">5x moins cher qu'Orgasoftware. 100% adaptÃ© Ã  votre mÃ©tier.</h2>
-    </div>
-    <div class="fade-in" style="overflow-x:auto;">
-      <table class="comparison-table">
-        <thead>
-          <tr>
-            <th>CritÃ¨re</th>
-            <th class="col-competitor">Orgasoftware</th>
-            <th class="col-bepilot">BE Pilot</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Prix</td>
-            <td class="cell-negative">~800 â¬/mois</td>
-            <td class="cell-positive">150 â¬/mois</td>
-          </tr>
-          <tr>
-            <td>DÃ©ploiement</td>
-            <td class="cell-negative">4-6 mois</td>
-            <td class="cell-positive">2 semaines</td>
-          </tr>
-          <tr>
-            <td>Personnalisation</td>
-            <td class="cell-negative">GÃ©nÃ©rique</td>
-            <td class="cell-positive">100% sur-mesure</td>
-          </tr>
-          <tr>
-            <td>Support</td>
-            <td class="cell-negative">Hotline nationale</td>
-            <td class="cell-positive">Local et rÃ©actif</td>
-          </tr>
-          <tr>
-            <td>Formation</td>
-            <td class="cell-negative">Plusieurs semaines</td>
-            <td class="cell-positive">1 journÃ©e</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
+<section class="section section-anthracite" id="contact"><div class="cta-final"><div class="container">
+<h2 class="section-title fade-in">Pr&#234;t &#224; simplifier votre gestion ?</h2>
+<p class="section-subtitle fade-in">Demandez un audit gratuit. R&#233;ponse sous 48h. Sans engagement.</p>
+<div class="fade-in"><a href="mailto:notitiacorp@gmail.com?subject=Demande%20de%20d%C3%A9mo%20BE%20Pilot" class="btn-primary" style="font-size:18px;padding:16px 40px;margin-bottom:32px;">Prendre contact</a></div>
+<div class="cta-contact fade-in"><strong>Quentin CONVERT</strong><br><a href="mailto:notitiacorp@gmail.com">notitiacorp@gmail.com</a><br><a href="tel:+33671902513">06 71 90 25 13</a></div>
+</div></div></section>
 
-<!-- Processus -->
-<section class="section section-gray" id="processus">
-  <div class="container">
-    <div class="fade-in" style="text-align:center;margin-bottom:8px;">
-      <p class="section-label">DÃ©marrage</p>
-      <h2 class="section-title" style="max-width:600px;margin-left:auto;margin-right:auto;">OpÃ©rationnel en 2 semaines</h2>
-      <p class="section-subtitle" style="margin:0 auto;">Un processus simple et rapide pour ne pas perturber votre activitÃ©.</p>
-    </div>
-    <div class="process-grid">
-      <div class="process-step fade-in">
-        <div class="process-number">1</div>
-        <h3>Audit gratuit</h3>
-        <p>On analyse vos processus en 48h pour identifier les gains rapides.</p>
-      </div>
-      <div class="process-step fade-in">
-        <div class="process-number">2</div>
-        <h3>Prototype</h3>
-        <p>Vous validez la solution avant tout dÃ©veloppement.</p>
-      </div>
-      <div class="process-step fade-in">
-        <div class="process-number">3</div>
-        <h3>DÃ©veloppement</h3>
-        <p>Votre outil sur-mesure construit en moins de 2 semaines.</p>
-      </div>
-      <div class="process-step fade-in">
-        <div class="process-number">4</div>
-        <h3>DÃ©ploiement</h3>
-        <p>Formation Ã©quipe + support continu pour garantir l'adoption.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA Final -->
-<section class="section section-anthracite" id="contact">
-  <div class="cta-final">
-    <div class="container">
-      <h2 class="section-title fade-in">PrÃªt Ã  simplifier votre gestion ?</h2>
-      <p class="section-subtitle fade-in">Demandez un audit gratuit. RÃ©ponse sous 48h. Sans engagement.</p>
-      <div class="fade-in">
-        <a href="mailto:notitiacorp@gmail.com?subject=Demande%20de%20d%C3%A9mo%20BE%20Pilot" class="btn-primary" style="font-size:18px;padding:16px 40px;margin-bottom:32px;">Prendre contact</a>
-      </div>
-      <div class="cta-contact fade-in">
-        <strong>Quentin CONVERT</strong><br>
-        <a href="mailto:notitiacorp@gmail.com">notitiacorp@gmail.com</a><br>
-        <a href="tel:+33671902513">06 71 90 25 13</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer class="footer">
-  &copy; 2025 BE Pilot â Notitia Corp. Tous droits rÃ©servÃ©s.
-</footer>
+<footer class="footer">&#169; 2025 BE Pilot &#8212; Notitia Corp. Tous droits r&#233;serv&#233;s.</footer>
 
 <script>
-  // Mobile menu toggle
-  document.getElementById('mobileToggle').addEventListener('click', function() {
-    document.getElementById('mainNav').classList.toggle('open');
-  });
-
-  // Close mobile menu on link click
-  document.querySelectorAll('.nav a').forEach(function(link) {
-    link.addEventListener('click', function() {
-      document.getElementById('mainNav').classList.remove('open');
-    });
-  });
-
-  // Reading progress bar
-  window.addEventListener('scroll', function() {
-    var winScroll = document.documentElement.scrollTop;
-    var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    var scrolled = (winScroll / height) * 100;
-    document.getElementById('progress-bar').style.width = scrolled + '%';
-  });
-
-  // Intersection Observer for fade-in
-  var fadeObserver = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-  document.querySelectorAll('.fade-in').forEach(function(el) {
-    fadeObserver.observe(el);
-  });
-
-  // Animated counters
-  var counterObserver = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        var counter = entry.target;
-        var target = parseInt(counter.getAttribute('data-target'));
-        var duration = 1500;
-        var startTime = null;
-
-        function animate(currentTime) {
-          if (!startTime) startTime = currentTime;
-          var progress = Math.min((currentTime - startTime) / duration, 1);
-          var eased = 1 - Math.pow(1 - progress, 3);
-          counter.textContent = Math.floor(eased * target);
-          if (progress < 1) {
-            requestAnimationFrame(animate);
-          } else {
-            counter.textContent = target;
-          }
-        }
-
-        requestAnimationFrame(animate);
-        counterObserver.unobserve(counter);
-      }
-    });
-  }, { threshold: 0.5 });
-
-  document.querySelectorAll('.counter').forEach(function(el) {
-    counterObserver.observe(el);
-  });
+document.getElementById('mobileToggle').addEventListener('click', function() { document.getElementById('mainNav').classList.toggle('open'); });
+document.querySelectorAll('.nav a').forEach(function(link) { link.addEventListener('click', function() { document.getElementById('mainNav').classList.remove('open'); }); });
+window.addEventListener('scroll', function() { var s = document.documentElement.scrollTop; var h = document.documentElement.scrollHeight - document.documentElement.clientHeight; document.getElementById('progress-bar').style.width = (s / h) * 100 + '%'; });
+var fadeObs = new IntersectionObserver(function(e) { e.forEach(function(en) { if (en.isIntersecting) en.target.classList.add('visible'); }); }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.fade-in').forEach(function(el) { fadeObs.observe(el); });
+var cntObs = new IntersectionObserver(function(e) { e.forEach(function(en) { if (en.isIntersecting) { var c = en.target; var t = parseInt(c.getAttribute('data-target')); var d = 1500; var st = null; function a(ct) { if (!st) st = ct; var p = Math.min((ct - st) / d, 1); c.textContent = Math.floor((1 - Math.pow(1 - p, 3)) * t); if (p < 1) requestAnimationFrame(a); else c.textContent = t; } requestAnimationFrame(a); cntObs.unobserve(c); } }); }, { threshold: 0.5 });
+document.querySelectorAll('.counter').forEach(function(el) { cntObs.observe(el); });
 </script>
-
-</body>
-</html>
+</body></html>
