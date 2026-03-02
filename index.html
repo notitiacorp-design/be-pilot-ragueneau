@@ -4,12 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BE Pilot | Gestion de Projets Cuisine Professionnelle</title>
-  <meta name="description" content="BE Pilot révolutionne la gestion de projets en cuisine professionnelle. Coordonnez vos équipes du devis au SAV, éliminez les tableaux dispersés et centralisez vos plannings en temps réel.">
+  <meta name="description" content="BE Pilot : l'outil de suivi concu pour les equipes qui installent et maintiennent des cuisines professionnelles. De la commande a la reception.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after {
       margin: 0;
@@ -18,16 +16,18 @@
     }
 
     :root {
-      --bg: #04070f;
-      --bg2: #0a0f1a;
-      --cyan: #00d4ff;
-      --violet: #7c3aed;
-      --blue: #1e40af;
       --white: #ffffff;
-      --gray: #94a3b8;
-      --gray2: #64748b;
-      --glass: rgba(255,255,255,0.04);
-      --glass-border: rgba(255,255,255,0.08);
+      --gray-bg: #f4f5f7;
+      --gray-border: #e8eaed;
+      --gray-text: #6b7280;
+      --orange: #e8650a;
+      --orange-hover: #d45a08;
+      --orange-light: #f97316;
+      --anthracite: #1f2937;
+      --green-light: #ecfdf5;
+      --green-text: #059669;
+      --red-light: #fef2f2;
+      --red-text: #dc2626;
     }
 
     html {
@@ -35,1735 +35,1047 @@
     }
 
     body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--white);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--anthracite);
+      background: var(--white);
+      line-height: 1.6;
+      font-size: 16px;
       overflow-x: hidden;
     }
 
-    /* ─── Aurora ─── */
-    .aurora {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
-    .aurora-layer {
-      position: absolute;
-      inset: -50%;
-      opacity: 0.55;
-    }
-
-    .aurora-layer:nth-child(1) {
-      background: radial-gradient(ellipse 80% 60% at 20% 30%, rgba(0, 212, 255, 0.18) 0%, transparent 60%),
-                  radial-gradient(ellipse 60% 80% at 80% 70%, rgba(124, 58, 237, 0.15) 0%, transparent 60%);
-      animation: aurora1 18s ease-in-out infinite alternate;
-    }
-
-    .aurora-layer:nth-child(2) {
-      background: radial-gradient(ellipse 70% 50% at 60% 20%, rgba(30, 64, 175, 0.2) 0%, transparent 55%),
-                  radial-gradient(ellipse 50% 70% at 30% 80%, rgba(0, 212, 255, 0.12) 0%, transparent 60%);
-      animation: aurora2 24s ease-in-out infinite alternate;
-    }
-
-    .aurora-layer:nth-child(3) {
-      background: radial-gradient(ellipse 90% 40% at 50% 60%, rgba(124, 58, 237, 0.1) 0%, transparent 55%),
-                  radial-gradient(ellipse 40% 90% at 10% 40%, rgba(0, 212, 255, 0.08) 0%, transparent 60%);
-      animation: aurora3 30s ease-in-out infinite alternate;
-    }
-
-    @keyframes aurora1 {
-      0%   { transform: translate(0%, 0%) rotate(0deg) scale(1); }
-      33%  { transform: translate(5%, -8%) rotate(3deg) scale(1.05); }
-      66%  { transform: translate(-8%, 5%) rotate(-2deg) scale(0.97); }
-      100% { transform: translate(3%, 10%) rotate(5deg) scale(1.08); }
-    }
-
-    @keyframes aurora2 {
-      0%   { transform: translate(0%, 0%) rotate(0deg) scale(1.02); }
-      25%  { transform: translate(-6%, 8%) rotate(-4deg) scale(0.95); }
-      75%  { transform: translate(10%, -5%) rotate(2deg) scale(1.07); }
-      100% { transform: translate(-4%, -10%) rotate(-6deg) scale(1); }
-    }
-
-    @keyframes aurora3 {
-      0%   { transform: translate(0%, 0%) rotate(0deg); }
-      50%  { transform: translate(8%, 6%) rotate(3deg) scale(1.04); }
-      100% { transform: translate(-5%, -8%) rotate(-4deg) scale(0.96); }
-    }
-
-    /* ─── Progress bar ─── */
+    /* Reading progress bar */
     #progress-bar {
       position: fixed;
       top: 0;
       left: 0;
       height: 3px;
-      width: 0%;
-      background: linear-gradient(90deg, var(--cyan), var(--violet));
-      z-index: 9999;
+      background: var(--orange);
+      z-index: 10001;
       transition: width 0.1s linear;
-      box-shadow: 0 0 12px rgba(0, 212, 255, 0.6);
+      width: 0%;
     }
 
-    /* ─── Navigation ─── */
-    nav {
-      position: fixed;
+    /* Header */
+    .header {
+      position: sticky;
       top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-border);
+      z-index: 10000;
+      padding: 0 24px;
+    }
+
+    .header-inner {
+      max-width: 1140px;
+      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 2.5rem;
-      height: 72px;
-      background: rgba(4, 7, 15, 0.6);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border-bottom: 1px solid var(--glass-border);
-      transition: background 0.3s ease;
+      height: 64px;
     }
 
-    nav.scrolled {
-      background: rgba(4, 7, 15, 0.85);
-    }
-
-    .nav-logo {
-      font-size: 1.4rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      background: linear-gradient(135deg, var(--cyan), var(--violet));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .logo {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--orange);
       text-decoration: none;
+      letter-spacing: -0.5px;
     }
 
-    .nav-links {
+    .logo span {
+      color: var(--anthracite);
+    }
+
+    .nav {
       display: flex;
       align-items: center;
-      gap: 2.5rem;
-      list-style: none;
+      gap: 32px;
     }
 
-    .nav-links a {
-      color: var(--gray);
+    .nav a {
       text-decoration: none;
-      font-size: 0.9rem;
+      color: var(--gray-text);
+      font-size: 14px;
       font-weight: 500;
-      letter-spacing: 0.01em;
-      transition: color 0.25s ease;
-      position: relative;
+      transition: color 0.2s;
     }
 
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background: var(--cyan);
-      transition: width 0.25s ease;
+    .nav a:hover {
+      color: var(--anthracite);
     }
 
-    .nav-links a:hover {
+    .nav .btn-nav {
+      background: var(--orange);
+      color: var(--white);
+      padding: 8px 20px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+
+    .nav .btn-nav:hover {
+      background: var(--orange-hover);
       color: var(--white);
     }
 
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    .nav-cta {
-      padding: 0.6rem 1.4rem;
-      background: linear-gradient(135deg, var(--cyan), var(--violet));
-      border: none;
-      border-radius: 50px;
-      color: var(--white);
-      font-size: 0.88rem;
-      font-weight: 700;
-      cursor: pointer;
-      text-decoration: none;
-      letter-spacing: 0.02em;
-      transition: opacity 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
-      white-space: nowrap;
-    }
-
-    .nav-cta:hover {
-      opacity: 0.9;
-      box-shadow: 0 0 24px rgba(0, 212, 255, 0.4);
-      transform: translateY(-1px);
-    }
-
-    .nav-hamburger {
+    .mobile-toggle {
       display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
       background: none;
       border: none;
-      padding: 4px;
+      cursor: pointer;
+      padding: 8px;
     }
 
-    .nav-hamburger span {
-      display: block;
+    .mobile-toggle svg {
       width: 24px;
-      height: 2px;
-      background: var(--white);
-      border-radius: 2px;
-      transition: all 0.3s ease;
+      height: 24px;
+      stroke: var(--anthracite);
     }
 
-    /* ─── Hero ─── */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 8rem 2rem 4rem;
-      overflow: hidden;
+    /* Sections */
+    .section {
+      padding: 80px 24px;
     }
 
-    #heroCanvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
+    .section-gray {
+      background: var(--gray-bg);
     }
 
-    .hero-spotlight {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 2;
-      background: radial-gradient(
-        600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-        rgba(0, 212, 255, 0.07),
-        transparent 50%
-      );
-      transition: background 0.1s ease;
+    .section-anthracite {
+      background: var(--anthracite);
     }
 
-    .hero-content {
-      position: relative;
-      z-index: 3;
-      max-width: 900px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.75rem;
+    .section-orange {
+      background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%);
     }
 
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.45rem 1.1rem;
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      border-radius: 50px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--cyan);
-      letter-spacing: 0.06em;
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 13px;
+      font-weight: 700;
       text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--orange);
+      margin-bottom: 12px;
     }
 
-    .hero-badge-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--cyan);
-      animation: pulseDot 2s ease-in-out infinite;
+    .section-title {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--anthracite);
+      line-height: 1.2;
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
     }
 
-    @keyframes pulseDot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.7); }
+    .section-subtitle {
+      font-size: 18px;
+      color: var(--gray-text);
+      max-width: 640px;
+      line-height: 1.7;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 100px 24px 60px;
+      text-align: center;
+    }
+
+    .hero .section-label {
+      margin-bottom: 16px;
     }
 
     .hero-title {
-      font-size: clamp(3rem, 8vw, 6rem);
+      font-size: 48px;
       font-weight: 900;
-      line-height: 1.05;
-      letter-spacing: -0.04em;
-      background: linear-gradient(135deg, var(--cyan) 0%, var(--white) 40%, var(--violet) 70%, var(--blue) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--anthracite);
+      line-height: 1.15;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .hero-subtitle {
-      font-size: clamp(1.1rem, 2vw, 1.4rem);
-      color: var(--gray);
+      font-size: 20px;
+      color: var(--gray-text);
       max-width: 600px;
-      line-height: 1.65;
-      font-weight: 400;
+      margin: 0 auto 36px;
+      line-height: 1.7;
     }
 
-    .hero-actions {
+    .hero-cta {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      margin-top: 0.5rem;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 0;
     }
 
     .btn-primary {
       display: inline-flex;
       align-items: center;
-      gap: 0.6rem;
-      padding: 1rem 2.4rem;
-      background: linear-gradient(135deg, var(--cyan), var(--violet));
-      border: none;
-      border-radius: 50px;
+      gap: 8px;
+      background: var(--orange);
       color: var(--white);
-      font-size: 1.05rem;
-      font-weight: 700;
-      cursor: pointer;
+      padding: 14px 32px;
+      border-radius: 8px;
       text-decoration: none;
-      letter-spacing: 0.01em;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn-primary::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
-      opacity: 0;
-      transition: opacity 0.25s ease;
+      font-weight: 700;
+      font-size: 16px;
+      transition: background 0.2s, transform 0.2s;
+      border: 2px solid var(--orange);
     }
 
     .btn-primary:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 0 40px rgba(0, 212, 255, 0.5), 0 20px 60px rgba(124, 58, 237, 0.3);
+      background: var(--orange-hover);
+      border-color: var(--orange-hover);
+      transform: translateY(-1px);
     }
 
-    .btn-primary:hover::before {
-      opacity: 1;
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--orange);
+      padding: 14px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 16px;
+      border: 2px solid var(--orange);
+      transition: background 0.2s, transform 0.2s;
     }
 
-    .btn-arrow {
-      font-size: 1.1rem;
-      transition: transform 0.25s ease;
+    .btn-secondary:hover {
+      background: rgba(232, 101, 10, 0.06);
+      transform: translateY(-1px);
     }
 
-    .btn-primary:hover .btn-arrow {
-      transform: translateX(4px);
+    /* Reassurance banner */
+    .reassurance {
+      padding: 40px 24px;
+      border-top: 1px solid var(--gray-border);
+      border-bottom: 1px solid var(--gray-border);
+      background: var(--gray-bg);
     }
 
-    .hero-note {
-      font-size: 0.82rem;
-      color: var(--gray2);
-      letter-spacing: 0.03em;
+    .reassurance-grid {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      text-align: center;
     }
 
-    .hero-note span {
-      color: var(--gray);
-    }
-
-    .hero-scroll-indicator {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 50%;
-      transform: translateX(-50%);
+    .reassurance-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
-      z-index: 3;
-      opacity: 0.5;
+      gap: 10px;
     }
 
-    .scroll-mouse {
-      width: 22px;
-      height: 36px;
-      border: 2px solid var(--gray2);
-      border-radius: 11px;
+    .reassurance-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--white);
+      border-radius: 10px;
       display: flex;
+      align-items: center;
       justify-content: center;
-      padding-top: 6px;
+      border: 1px solid var(--gray-border);
     }
 
-    .scroll-wheel {
-      width: 3px;
-      height: 8px;
-      background: var(--gray);
-      border-radius: 2px;
-      animation: scrollWheel 2s ease-in-out infinite;
+    .reassurance-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--orange);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
-    @keyframes scrollWheel {
-      0%   { opacity: 1; transform: translateY(0); }
-      100% { opacity: 0; transform: translateY(10px); }
+    .reassurance-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--anthracite);
     }
 
-    /* ─── Problem cards ─── */
+    /* Problem cards */
     .problems-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
+      gap: 24px;
+      margin-top: 48px;
     }
 
     .problem-card {
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      padding: 2.5rem;
-      position: relative;
-      overflow: hidden;
-      cursor: default;
-      transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1),
-                  box-shadow 0.35s ease,
-                  border-color 0.35s ease;
-    }
-
-    .problem-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(0, 212, 255, 0.04), rgba(124, 58, 237, 0.04));
-      opacity: 0;
-      transition: opacity 0.35s ease;
+      background: var(--white);
+      border: 1px solid var(--gray-border);
+      border-left: 4px solid var(--orange);
+      border-radius: 8px;
+      padding: 28px;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .problem-card:hover {
-      transform: scale(1.02);
-      border-color: rgba(0, 212, 255, 0.2);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 212, 255, 0.06);
-      clip-path: polygon(0 0, 100% 0, 100% 94%, 98% 100%, 0 100%);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
     }
 
-    .problem-card:hover::before {
-      opacity: 1;
+    .problem-card-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(232, 101, 10, 0.08);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
     }
 
-    .problem-number {
-      font-size: 3.5rem;
-      font-weight: 900;
-      line-height: 1;
-      background: linear-gradient(135deg, var(--cyan), var(--violet));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 1rem;
-      font-family: 'JetBrains Mono', monospace;
+    .problem-card-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--orange);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
-    .problem-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 0.75rem;
-      color: var(--white);
+    .problem-card h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--anthracite);
+      margin-bottom: 8px;
     }
 
-    .problem-desc {
-      font-size: 0.93rem;
-      color: var(--gray);
-      line-height: 1.65;
+    .problem-card p {
+      font-size: 15px;
+      color: var(--gray-text);
+      line-height: 1.6;
     }
 
-    /* ─── Solution cards ─── */
-    .solutions-grid {
+    /* Solution cards */
+    .solution-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
     }
 
     .solution-card {
-      position: relative;
-      border-radius: 20px;
-      padding: 2px;
-      overflow: hidden;
+      background: var(--white);
+      border: 1px solid var(--gray-border);
+      border-radius: 8px;
+      padding: 28px;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    .solution-card::before {
-      content: '';
-      position: absolute;
-      inset: -2px;
-      background: conic-gradient(
-        from var(--angle, 0deg),
-        var(--cyan),
-        var(--violet),
-        var(--blue),
-        var(--cyan)
-      );
-      border-radius: 22px;
-      animation: rotateBorder 4s linear infinite;
-      opacity: 0;
-      transition: opacity 0.35s ease;
+    .solution-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
     }
 
-    .solution-card:hover::before {
-      opacity: 1;
-    }
-
-    @keyframes rotateBorder {
-      0%   { --angle: 0deg; }
-      100% { --angle: 360deg; }
-    }
-
-    @property --angle {
-      syntax: '<angle>';
-      initial-value: 0deg;
-      inherits: false;
-    }
-
-    .solution-card-inner {
-      background: var(--bg2);
-      border-radius: 18px;
-      padding: 2rem;
-      height: 100%;
-      border: 1px solid var(--glass-border);
-      transition: border-color 0.35s ease;
-    }
-
-    .solution-card:hover .solution-card-inner {
-      border-color: transparent;
-    }
-
-    .solution-icon {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      display: block;
-    }
-
-    .solution-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 0.6rem;
-      color: var(--white);
-    }
-
-    .solution-desc {
-      font-size: 0.9rem;
-      color: var(--gray);
-      line-height: 1.65;
-    }
-
-    /* ─── Stats ─── */
-    .stats-row {
+    .solution-card-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(232, 101, 10, 0.08);
+      border-radius: 10px;
       display: flex;
-      flex-direction: row;
-      gap: 3rem;
-      justify-content: center;
       align-items: center;
-      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .solution-card-icon svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--orange);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .solution-card h3 {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--anthracite);
+      margin-bottom: 8px;
+    }
+
+    .solution-card p {
+      font-size: 15px;
+      color: var(--gray-text);
+      line-height: 1.6;
+    }
+
+    /* Stats section */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      text-align: center;
     }
 
     .stat-item {
-      text-align: center;
+      color: var(--white);
     }
 
     .stat-number {
-      font-size: 4rem;
+      font-size: 48px;
       font-weight: 900;
-      letter-spacing: -0.04em;
-      background: linear-gradient(135deg, var(--cyan), var(--violet));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1;
-      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.1;
+      margin-bottom: 8px;
     }
 
     .stat-label {
-      font-size: 0.9rem;
-      color: var(--gray);
-      margin-top: 0.5rem;
+      font-size: 15px;
       font-weight: 500;
+      opacity: 0.9;
     }
 
-    /* ─── Timeline ─── */
-    .timeline {
-      position: relative;
-      padding-left: 2rem;
+    /* Comparison table */
+    .comparison-intro {
+      text-align: center;
+      margin-bottom: 48px;
     }
 
-    .timeline-line {
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: linear-gradient(180deg, var(--cyan), var(--violet), transparent);
+    .comparison-intro .section-title {
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    .timeline-step {
-      position: relative;
-      padding-left: 2.5rem;
-      padding-bottom: 3rem;
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
     }
 
-    .timeline-step:last-child {
-      padding-bottom: 0;
-    }
-
-    .timeline-dot {
-      position: absolute;
-      left: -2.6rem;
-      top: 0.2rem;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--cyan), var(--violet));
-      box-shadow: 0 0 16px rgba(0, 212, 255, 0.5);
-    }
-
-    .timeline-label {
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--cyan);
-      margin-bottom: 0.4rem;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    .timeline-title {
-      font-size: 1.15rem;
-      font-weight: 700;
+    .comparison-table thead th {
+      padding: 18px 24px;
+      font-size: 15px;
+      font-weight: 800;
+      text-align: left;
+      background: var(--anthracite);
       color: var(--white);
-      margin-bottom: 0.5rem;
     }
 
-    .timeline-desc {
-      font-size: 0.9rem;
-      color: var(--gray);
-      line-height: 1.65;
+    .comparison-table thead th:first-child {
+      width: 30%;
     }
 
-    /* ─── Testimonial ─── */
-    .testimonial-card {
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      border-left: 4px solid transparent;
-      border-image: linear-gradient(180deg, var(--cyan), var(--violet)) 1;
-      border-radius: 20px;
-      padding: 3rem;
+    .comparison-table thead th.col-competitor {
+      color: var(--gray-text);
+      background: var(--anthracite);
+    }
+
+    .comparison-table thead th.col-bepilot {
+      color: var(--orange-light);
+    }
+
+    .comparison-table tbody td {
+      padding: 16px 24px;
+      font-size: 15px;
+      border-bottom: 1px solid var(--gray-border);
+      vertical-align: middle;
+    }
+
+    .comparison-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .comparison-table tbody td:first-child {
+      font-weight: 700;
+      color: var(--anthracite);
+    }
+
+    .comparison-table .cell-negative {
+      background: var(--red-light);
+      color: var(--red-text);
+      font-weight: 600;
+    }
+
+    .comparison-table .cell-positive {
+      background: var(--green-light);
+      color: var(--green-text);
+      font-weight: 600;
+    }
+
+    /* Process steps */
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .process-step {
+      text-align: center;
       position: relative;
     }
 
-    .testimonial-quote {
-      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-      font-style: italic;
+    .process-number {
+      width: 56px;
+      height: 56px;
+      background: var(--orange);
       color: var(--white);
-      line-height: 1.7;
-      margin-bottom: 1.5rem;
-      font-weight: 300;
-    }
-
-    .testimonial-quote::before {
-      content: '\201C';
-      font-size: 4rem;
-      line-height: 0;
-      vertical-align: -1.5rem;
-      color: var(--cyan);
-      font-style: normal;
+      font-size: 22px;
       font-weight: 900;
-      margin-right: 0.2rem;
-      opacity: 0.6;
-    }
-
-    .testimonial-author {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .testimonial-avatar {
-      width: 48px;
-      height: 48px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--cyan), var(--violet));
       display: flex;
       align-items: center;
       justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .process-step h3 {
+      font-size: 17px;
       font-weight: 800;
-      font-size: 1.1rem;
-      flex-shrink: 0;
+      color: var(--anthracite);
+      margin-bottom: 8px;
     }
 
-    .testimonial-name {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--white);
+    .process-step p {
+      font-size: 14px;
+      color: var(--gray-text);
+      line-height: 1.6;
     }
 
-    .testimonial-role {
-      font-size: 0.82rem;
-      color: var(--gray2);
-      margin-top: 0.15rem;
+    .process-connector {
+      display: none;
     }
 
-    /* ─── CTA section ─── */
-    .cta-section {
+    /* CTA Final */
+    .cta-final {
       text-align: center;
-      position: relative;
-      overflow: hidden;
+      padding: 80px 24px;
     }
 
-    .cta-bg {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0, 212, 255, 0.06) 0%, rgba(124, 58, 237, 0.06) 50%, transparent 80%);
-      pointer-events: none;
-    }
-
-    .btn-cta-large {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.7rem;
-      padding: 1.2rem 3rem;
-      background: linear-gradient(135deg, var(--cyan), var(--violet));
-      border: none;
-      border-radius: 50px;
+    .cta-final .section-title {
       color: var(--white);
-      font-size: 1.15rem;
+      margin-bottom: 12px;
+    }
+
+    .cta-final .section-subtitle {
+      color: #9ca3af;
+      margin: 0 auto 36px;
+      text-align: center;
+    }
+
+    .cta-final .btn-primary {
+      font-size: 18px;
+      padding: 16px 40px;
+      margin-bottom: 32px;
+    }
+
+    .cta-contact {
+      color: #9ca3af;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .cta-contact strong {
+      color: var(--white);
       font-weight: 700;
-      cursor: pointer;
+    }
+
+    .cta-contact a {
+      color: var(--orange-light);
       text-decoration: none;
-      letter-spacing: 0.01em;
-      transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
-                  box-shadow 0.3s ease;
-      position: relative;
-      overflow: hidden;
     }
 
-    .btn-cta-large::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.18), transparent);
-      opacity: 0;
-      transition: opacity 0.25s ease;
+    .cta-contact a:hover {
+      text-decoration: underline;
     }
 
-    .btn-cta-large:hover {
-      transform: translateY(-4px) scale(1.03);
-      box-shadow: 0 0 60px rgba(0, 212, 255, 0.55),
-                  0 30px 80px rgba(124, 58, 237, 0.35);
-    }
-
-    .btn-cta-large:hover::before {
-      opacity: 1;
-    }
-
-    /* ─── Footer ─── */
-    footer {
+    /* Footer */
+    .footer {
+      background: #111827;
+      padding: 24px;
       text-align: center;
-      padding: 2.5rem 2rem;
-      border-top: 1px solid var(--glass-border);
-      position: relative;
-      z-index: 2;
+      font-size: 13px;
+      color: #6b7280;
+      border-top: 1px solid #374151;
     }
 
-    .footer-logo {
-      font-size: 1.1rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--cyan), var(--violet));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 0.75rem;
-    }
-
-    .footer-text {
-      font-size: 0.82rem;
-      color: var(--gray2);
-    }
-
-    /* ─── Sections ─── */
-    section {
-      position: relative;
-      z-index: 2;
-      padding: 8rem 2rem;
-    }
-
-    .section-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .section-tag {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--cyan);
-      margin-bottom: 1rem;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    .section-title {
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin-bottom: 1rem;
-      color: var(--white);
-    }
-
-    .section-subtitle {
-      font-size: 1.05rem;
-      color: var(--gray);
-      line-height: 1.65;
-      max-width: 580px;
-      margin-bottom: 3.5rem;
-    }
-
-    /* ─── Divider ─── */
-    .gradient-divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
-      margin: 0 auto;
-      max-width: 800px;
-    }
-
-    /* ─── Particle canvas ─── */
-    #particleCanvas {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1;
-      opacity: 0.4;
-    }
-
-    /* ─── Scroll reveal ─── */
-    .fade-up {
+    /* Fade-in animations */
+    .fade-in {
       opacity: 0;
-      transform: translateY(40px);
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
 
-    .fade-up.visible {
+    .fade-in.visible {
       opacity: 1;
       transform: translateY(0);
-      transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1),
-                  transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
     }
 
-    /* ─── Particle float ─── */
-    @keyframes float {
-      0%, 100% { transform: translateY(0) translateX(0); }
-      25%  { transform: translateY(-12px) translateX(6px); }
-      50%  { transform: translateY(-6px) translateX(-8px); }
-      75%  { transform: translateY(-18px) translateX(4px); }
-    }
-
-    /* ─── Responsive ─── */
-    @media (max-width: 768px) {
-      nav {
-        padding: 0 1.25rem;
-      }
-
-      .nav-links {
+    /* Responsive */
+    @media (max-width: 968px) {
+      .nav {
         display: none;
-        position: fixed;
-        inset: 72px 0 0;
-        background: rgba(4, 7, 15, 0.97);
-        backdrop-filter: blur(24px);
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background: var(--white);
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 2.5rem;
+        padding: 24px;
+        gap: 20px;
+        border-bottom: 1px solid var(--gray-border);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
       }
 
-      .nav-links.open {
+      .nav.open {
         display: flex;
       }
 
-      .nav-links a {
-        font-size: 1.2rem;
+      .mobile-toggle {
+        display: block;
       }
 
-      .nav-hamburger {
-        display: flex;
+      .hero-title {
+        font-size: 32px;
       }
 
-      .hero {
-        padding: 7rem 1.5rem 3rem;
+      .hero-subtitle {
+        font-size: 17px;
+      }
+
+      .section-title {
+        font-size: 28px;
       }
 
       .problems-grid {
         grid-template-columns: 1fr;
       }
 
-      .solutions-grid {
+      .solution-grid {
         grid-template-columns: 1fr;
       }
 
-      .stats-row {
-        gap: 2rem;
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
       }
 
       .stat-number {
-        font-size: 3rem;
+        font-size: 36px;
       }
 
-      section {
-        padding: 5rem 1.5rem;
+      .process-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
 
-      .testimonial-card {
-        padding: 2rem;
+      .reassurance-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
       }
 
-      .btn-cta-large {
-        padding: 1rem 2rem;
-        font-size: 1rem;
+      .comparison-table {
+        font-size: 13px;
       }
 
-      .timeline {
-        padding-left: 1.5rem;
+      .comparison-table thead th,
+      .comparison-table tbody td {
+        padding: 12px 14px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero {
+        padding: 60px 24px 40px;
       }
 
-      .timeline-dot {
-        left: -2.1rem;
+      .section {
+        padding: 56px 16px;
+      }
+
+      .hero-title {
+        font-size: 28px;
+      }
+
+      .hero-cta {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .btn-primary, .btn-secondary {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .process-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .comparison-table thead th:first-child,
+      .comparison-table tbody td:first-child {
+        width: auto;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Aurora -->
-  <div class="aurora">
-    <div class="aurora-layer"></div>
-    <div class="aurora-layer"></div>
-    <div class="aurora-layer"></div>
-  </div>
+<!-- Progress Bar -->
+<div id="progress-bar"></div>
 
-  <!-- Progress bar -->
-  <div id="progress-bar"></div>
-
-  <!-- Navigation -->
-  <nav id="navbar">
-    <a href="#" class="nav-logo">BE Pilot</a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#problemes">Problèmes</a></li>
-      <li><a href="#solution">Solution</a></li>
-      <li><a href="#resultats">Résultats</a></li>
-      <li><a href="#contact">Contact</a></li>
-      <li><a href="#contact" class="nav-cta">Demander une démo</a></li>
-    </ul>
-    <button class="nav-hamburger" id="hamburger" aria-label="Menu" onclick="document.getElementById('navLinks').classList.toggle('open')">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-  </nav>
-
-  <!-- Hero -->
-  <section class="hero" id="hero">
-    <canvas id="heroCanvas"></canvas>
-    <div class="hero-spotlight" id="heroSpotlight"></div>
-
-    <div class="hero-content">
-      <div class="hero-badge">
-        <span class="hero-badge-dot"></span>
-        Cuisine professionnelle · Gestion de projets
-      </div>
-
-      <h1 class="hero-title">Vos projets cuisine méritent mieux qu'Excel</h1>
-
-      <p class="hero-subtitle">
-        Coordonnez vos équipes du devis au SAV. Fini les tableaux dispersés, les plannings perdus et les relances oubliées.
-      </p>
-
-      <div class="hero-actions">
-        <a href="#contact" class="btn-primary">
-          Découvrir la solution
-          <span class="btn-arrow">→</span>
-        </a>
-        <p class="hero-note"><span>Démo gratuite</span> — Sans engagement</p>
-      </div>
-    </div>
-
-    <div class="hero-scroll-indicator">
-      <div class="scroll-mouse">
-        <div class="scroll-wheel"></div>
-      </div>
-    </div>
-  </section>
-
-<section id="problemes" style="padding: 120px 0; background: #0a0a0f; position: relative; overflow: hidden;">
-  <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 20% 50%, rgba(99, 102, 241, 0.06) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(239, 68, 68, 0.04) 0%, transparent 50%); pointer-events: none;"></div>
-
-  <div style="max-width: 1200px; margin: 0 auto; padding: 0 32px;">
-
-    <div style="text-align: center; margin-bottom: 80px;">
-      <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 100px; padding: 6px 16px; margin-bottom: 24px;">
-        <div style="width: 6px; height: 6px; background: #ef4444; border-radius: 50%; animation: pulse-red 2s infinite;"></div>
-        <span style="font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; color: #ef4444; letter-spacing: 0.08em; text-transform: uppercase;">Diagnostic secteur</span>
-      </div>
-      <h2 style="font-family: 'Inter', sans-serif; font-size: clamp(32px, 5vw, 52px); font-weight: 700; color: #f8fafc; line-height: 1.15; letter-spacing: -0.03em; margin: 0 0 20px;">Les 4 freins qui paralysent<br><span style="background: linear-gradient(135deg, #ef4444 0%, #f97316 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">votre activité</span></h2>
-      <p style="font-family: 'Inter', sans-serif; font-size: 18px; color: #94a3b8; max-width: 560px; margin: 0 auto; line-height: 1.7;">Chaque jour sans outil adapté, ce sont des heures perdues, des erreurs évitables et une croissance bridée.</p>
-    </div>
-
-    <div class="problems-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
-
-      <div class="problem-card" style="position: relative; background: rgba(15, 15, 25, 0.8); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 20px; padding: 40px; overflow: hidden; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); cursor: default;" onmouseenter="this.style.transform='translateY(-4px)'; this.style.borderColor='rgba(239,68,68,0.35)'; this.style.boxShadow='0 20px 60px rgba(239,68,68,0.1)'" onmouseleave="this.style.transform='translateY(0)'; this.style.borderColor='rgba(239,68,68,0.15)'; this.style.boxShadow='none'">
-        <div style="position: absolute; top: 0; right: 0; width: 200px; height: 200px; background: radial-gradient(circle at top right, rgba(239, 68, 68, 0.06) 0%, transparent 70%); pointer-events: none;"></div>
-        <div style="display: flex; align-items: flex-start; gap: 20px; margin-bottom: 24px;">
-          <div style="width: 52px; height: 52px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg>
-          </div>
-          <span style="font-family: 'Inter', sans-serif; font-size: 48px; font-weight: 800; color: rgba(239, 68, 68, 0.12); line-height: 1; letter-spacing: -0.04em;">01</span>
-        </div>
-        <h3 style="font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 650; color: #f1f5f9; margin: 0 0 14px; letter-spacing: -0.02em;">Coordination fragmentée</h3>
-        <p style="font-family: 'Inter', sans-serif; font-size: 15px; color: #64748b; line-height: 1.75; margin: 0 0 28px;">Du commercial au bureau d'études, du montage au SAV — l'information se perd entre chaque étape. Résultat : des erreurs, des doublons et des clients mécontents.</p>
-        <div style="display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 10px;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <span style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #ef4444;">67% des retards projet sont liés à une mauvaise coordination</span>
-        </div>
-      </div>
-
-      <div class="problem-card" style="position: relative; background: rgba(15, 15, 25, 0.8); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 20px; padding: 40px; overflow: hidden; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); cursor: default;" onmouseenter="this.style.transform='translateY(-4px)'; this.style.borderColor='rgba(239,68,68,0.35)'; this.style.boxShadow='0 20px 60px rgba(239,68,68,0.1)'" onmouseleave="this.style.transform='translateY(0)'; this.style.borderColor='rgba(239,68,68,0.15)'; this.style.boxShadow='none'">
-        <div style="position: absolute; top: 0; right: 0; width: 200px; height: 200px; background: radial-gradient(circle at top right, rgba(239, 68, 68, 0.06) 0%, transparent 70%); pointer-events: none;"></div>
-        <div style="display: flex; align-items: flex-start; gap: 20px; margin-bottom: 24px;">
-          <div style="width: 52px; height: 52px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
-          </div>
-          <span style="font-family: 'Inter', sans-serif; font-size: 48px; font-weight: 800; color: rgba(239, 68, 68, 0.12); line-height: 1; letter-spacing: -0.04em;">02</span>
-        </div>
-        <h3 style="font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 650; color: #f1f5f9; margin: 0 0 14px; letter-spacing: -0.02em;">Planning terrain chaotique</h3>
-        <p style="font-family: 'Inter', sans-serif; font-size: 15px; color: #64748b; line-height: 1.75; margin: 0 0 28px;">Vos techniciens jonglent entre les interventions sans vision globale. Les urgences SAV percutent les installations planifiées. Le planning papier ne suit plus.</p>
-        <div style="display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 10px;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <span style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #ef4444;">12h/semaine perdues en replanification manuelle</span>
-        </div>
-      </div>
-
-      <div class="problem-card" style="position: relative; background: rgba(15, 15, 25, 0.8); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 20px; padding: 40px; overflow: hidden; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); cursor: default;" onmouseenter="this.style.transform='translateY(-4px)'; this.style.borderColor='rgba(239,68,68,0.35)'; this.style.boxShadow='0 20px 60px rgba(239,68,68,0.1)'" onmouseleave="this.style.transform='translateY(0)'; this.style.borderColor='rgba(239,68,68,0.15)'; this.style.boxShadow='none'">
-        <div style="position: absolute; top: 0; right: 0; width: 200px; height: 200px; background: radial-gradient(circle at top right, rgba(239, 68, 68, 0.06) 0%, transparent 70%); pointer-events: none;"></div>
-        <div style="display: flex; align-items: flex-start; gap: 20px; margin-bottom: 24px;">
-          <div style="width: 52px; height: 52px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          </div>
-          <span style="font-family: 'Inter', sans-serif; font-size: 48px; font-weight: 800; color: rgba(239, 68, 68, 0.12); line-height: 1; letter-spacing: -0.04em;">03</span>
-        </div>
-        <h3 style="font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 650; color: #f1f5f9; margin: 0 0 14px; letter-spacing: -0.02em;">Maintenance réglementaire non suivie</h3>
-        <p style="font-family: 'Inter', sans-serif; font-size: 15px; color: #64748b; line-height: 1.75; margin: 0 0 28px;">Contrats de maintenance, échéances réglementaires, visites obligatoires — tout repose sur la mémoire de vos équipes. Un oubli peut coûter très cher.</p>
-        <div style="display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 10px;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <span style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #ef4444;">1 contrôle sur 3 révèle des non-conformités évitables</span>
-        </div>
-      </div>
-
-      <div class="problem-card" style="position: relative; background: rgba(15, 15, 25, 0.8); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 20px; padding: 40px; overflow: hidden; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); cursor: default;" onmouseenter="this.style.transform='translateY(-4px)'; this.style.borderColor='rgba(239,68,68,0.35)'; this.style.boxShadow='0 20px 60px rgba(239,68,68,0.1)'" onmouseleave="this.style.transform='translateY(0)'; this.style.borderColor='rgba(239,68,68,0.15)'; this.style.boxShadow='none'">
-        <div style="position: absolute; top: 0; right: 0; width: 200px; height: 200px; background: radial-gradient(circle at top right, rgba(239, 68, 68, 0.06) 0%, transparent 70%); pointer-events: none;"></div>
-        <div style="display: flex; align-items: flex-start; gap: 20px; margin-bottom: 24px;">
-          <div style="width: 52px; height: 52px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
-          </div>
-          <span style="font-family: 'Inter', sans-serif; font-size: 48px; font-weight: 800; color: rgba(239, 68, 68, 0.12); line-height: 1; letter-spacing: -0.04em;">04</span>
-        </div>
-        <h3 style="font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 650; color: #f1f5f9; margin: 0 0 14px; letter-spacing: -0.02em;">Traçabilité CERFA éparpillée</h3>
-        <p style="font-family: 'Inter', sans-serif; font-size: 15px; color: #64748b; line-height: 1.75; margin: 0 0 28px;">Certificats de conformité, attestations fluides, fiches d'intervention — dispersés entre classeurs, mails et téléphones. Retrouver un document prend des heures.</p>
-        <div style="display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 10px;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <span style="font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #ef4444;">4h en moyenne pour retrouver un CERFA en cas de contrôle</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<section id="solution" style="padding: 140px 0; background: #07070e; position: relative; overflow: hidden;">
-
-  <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 800px; height: 1px; background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.4), transparent);"></div>
-  <div style="position: absolute; top: -300px; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(99, 102, 241, 0.07) 0%, transparent 70%); pointer-events: none;"></div>
-  <div style="position: absolute; bottom: -200px; left: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(139, 92, 246, 0.05) 0%, transparent 70%); pointer-events: none;"></div>
-
-  <div style="max-width: 1200px; margin: 0 auto; padding: 0 32px;">
-
-    <div style="text-align: center; margin-bottom: 80px;">
-      <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.25); border-radius: 100px; padding: 6px 16px; margin-bottom: 24px;">
-        <div style="width: 6px; height: 6px; background: #6366f1; border-radius: 50%; animation: pulse-indigo 2s infinite;"></div>
-        <span style="font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; color: #818cf8; letter-spacing: 0.08em; text-transform: uppercase;">La solution</span>
-      </div>
-      <h2 style="font-family: 'Inter', sans-serif; font-size: clamp(32px, 5vw, 52px); font-weight: 700; color: #f8fafc; line-height: 1.15; letter-spacing: -0.03em; margin: 0 0 20px;">Une plateforme pensée<br><span style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">pour votre métier</span></h2>
-      <p style="font-family: 'Inter', sans-serif; font-size: 18px; color: #94a3b8; max-width: 600px; margin: 0 auto; line-height: 1.7;">BE Pilot centralise tout le cycle de vie de vos projets cuisine professionnelle.</p>
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px;">
-
-      <div class="solution-card" style="position: relative; border-radius: 20px; padding: 2px; background: linear-gradient(135deg, rgba(99,102,241,0.5) 0%, rgba(139,92,246,0.3) 50%, rgba(99,102,241,0.1) 100%); transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);" onmouseenter="this.style.transform='translateY(-6px)'; this.style.background='linear-gradient(135deg, rgba(99,102,241,0.9) 0%, rgba(139,92,246,0.7) 50%, rgba(99,102,241,0.4) 100%)'; this.querySelector('.sc-inner').style.background='rgba(10,10,22,0.95)'" onmouseleave="this.style.transform='translateY(0)'; this.style.background='linear-gradient(135deg, rgba(99,102,241,0.5) 0%, rgba(139,92,246,0.3) 50%, rgba(99,102,241,0.1) 100%)'; this.querySelector('.sc-inner').style.background='rgba(10,10,20,0.92)'">
-        <div class="sc-inner" style="background: rgba(10,10,20,0.92); border-radius: 18px; padding: 36px 32px; height: 100%; box-sizing: border-box; transition: background 0.4s;">
-          <div style="width: 52px; height: 52px; background: linear-gradient(135deg, rgba(99,102,241,0.2) 0%, rgba(139,92,246,0.15) 100%); border: 1px solid rgba(99,102,241,0.3); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
-          </div>
-          <h3 style="font-family: 'Inter', sans-serif; font-size: 19px; font-weight: 650; color: #f1f5f9; margin: 0 0 12px; letter-spacing: -0.02em;">Pilotage projet</h3>
-          <p style="font-family: 'Inter', sans-serif; font-size: 14px; color: #64748b; line-height: 1.75; margin: 0;">Suivez chaque projet du devis signé à la réception finale. Jalons automatiques, alertes retard, vision 360° en temps réel.</p>
-        </div>
-      </div>
-
-      <div class="solution-card" style="position: relative; border-radius: 20px; padding: 2px; background: linear-gradient(135deg, rgba(99,102,241,0.5) 0%, rgba(139,92,246,0.3) 50%, rgba(99,102,241,0.1) 100%); transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);" onmouseenter="this.style.transform='translateY(-6px)'; this.style.background='linear-gradient(135deg, rgba(99,102,241,0.9) 0%, rgba(139,92,246,0.7) 50%, rgba(99,102,241,0.4) 100%)'; this.querySelector('.sc-inner').style.background='rgba(10,10,22,0.95)'" onmouseleave="this.style.transform='translateY(0)'; this.style.background='linear-gradient(135deg, rgba(99,102,241,0.5) 0%, rgba(139,92,246,0.3) 50%, rgba(99,102,241,0.1) 100%)'; this.querySelector('.sc-inner').style.background='rgba(10,10,20,0.92)'">
-        <div class="sc-inner" style="background: rgba(10,10,20,0.92); border-radius: 18px; padding: 36px 32px; height: 100%; box-sizing: border-box; transition: background 0.4s;">
-          <div style="width: 52px; height: 52px; background: linear-gradient(135deg, rgba(99,102,241,0.2) 0%, rgba(139,92,246,0.15) 100%); border: 1px solid rgba(99,102,241,0.3); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          </div>
-          <h3 style="font-family: 'Inter', sans-serif; font-size: 19px; font-weight: 650; color: #f1f5f9; margin: 0 0 12px; letter-spacing: -0.02em;">Planning techniciens</h3>
-          <p style="font-family: 'Inter', sans-serif; font-size: 14px; color: #64748b; line-height: 1.75; margin: 0;">Affectez vos équipes terrain en un clic. Vue Gantt, géolocalisation, gestion des compétences et des disponibilités.</p>
-        </div>
-      </div>
-
-      <div class="solution-card" style="position: relative; border-radius: 20px; padding: 2px; background: linear-gradient(135deg, rgba(99,102,241,0.5) 0%, rgba(139,92,246,0.3) 50%, rgba(99,102,241,0.1) 100%); transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);" onmouseenter="this.style.transform='translateY(-6px)'; this.style.background='linear-gradient(135deg, rgba(99,102,241,0.9) 0%, rgba(139,92,246,0.7) 50%, rgba(99,102,241,0.4) 100%)'; this.querySelector('.sc-inner').style.background='rgba(10,10,22,0.95)'" onmouseleave="this.style.transform='translateY(0)'; this.style.background='linear-gradient(135deg, rgba(99,102,241,0.5) 0%, rgba(139,92,246,0.3) 50%, rgba(99,102,241,0.1) 100%)'; this.querySelector('.sc-inner').style.background='rgba(10,10,20,0.92)'">
-        <div class="sc-inner" style="background: rgba(10,10,20,0.92); border-radius: 18px; padding: 36px 32px; height: 100%; box-sizing: border-box; transition: background 0.4s;">
-          <div style="width: 52px; height: 52px; background: linear-gradient(135deg, rgba(99,102,241,0.2) 0%, rgba(139,92,246,0.15) 100%); border: 1px solid rgba(99,102,241,0.3); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-          </div>
-          <h3 style="font-family: 'Inter', sans-serif; font-size: 19px; font-weight: 650; color: #f1f5f9; margin: 0 0 12px; letter-spacing: -0.02em;">SAV & Maintenance</h3>
-          <p style="font-family: 'Inter', sans-serif; font-size: 14px; color: #64748b; line-height: 1.75; margin: 0;">Ticketing SAV intégré, contrats de maintenance avec rappels automatiques, historique complet par équipement.</p>
-        </div>
-      </div>
-
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
-
-      <div class="solution-card" style="position: relative; border-radius: 20px; padding: 2px; background: linear-gradient(135deg, rgba(99,102,241,0.5) 0%, rgba(139,92,246,0.3) 50%, rgba(99,102,241,0.1) 100%); transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);" onmouseenter="this.style.transform='translateY(-6px)'; this.style.background='linear-gradient(135deg, rgba(99,102,241,0.9) 0%, rgba(139,92,246,0.7) 50%, rgba(99,102,241,0.4) 100%)'; this.querySelector('.sc-inner').style.background='rgba(10,10,22,0.95)'" onmouseleave="this.style.transform='translateY(0)'; this.style.background='linear-gradient(135deg, rgba(99,102,241,0.5) 0%, rgba(139,92,246,0.3) 50%, rgba(99,102,241,0.1) 100%)'; this.querySelector('.sc-inner').style.background='rgba(10,10,20,0.92)'">
-        <div class="sc-inner" style="background: rgba(10,10,20,0.92); border-radius: 18px; padding: 36px 40px; height: 100%; box-sizing: border-box; transition: background 0.4s; display: flex; align-items: flex-start; gap: 28px;">
-          <div style="width: 52px; height: 52px; background: linear-gradient(135deg, rgba(99,102,241,0.2) 0%, rgba(139,92,246,0.15) 100%); border: 1px solid rgba(99,102,241,0.3); border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9,12 11,14 15,10"/></svg>
-          </div>
-          <div>
-            <h3 style="font-family: 'Inter', sans-serif; font-size: 19px; font-weight: 650; color: #f1f5f9; margin: 0 0 12px; letter-spacing: -0.02em;">Traçabilité réglementaire</h3>
-            <p style="font-family: 'Inter', sans-serif; font-size: 14px; color: #64748b; line-height: 1.75; margin: 0;">CERFA, attestations fluides, certificats de conformité — tout est centralisé, horodaté et exportable en un clic.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="solution-card" style="position: relative; border-radius: 20px; padding: 2px; background: linear-gradient(135deg, rgba(99,102,241,0.5) 0%, rgba(139,92,246,0.3) 50%, rgba(99,102,241,0.1) 100%); transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);" onmouseenter="this.style.transform='translateY(-6px)'; this.style.background='linear-gradient(135deg, rgba(99,102,241,0.9) 0%, rgba(139,92,246,0.7) 50%, rgba(99,102,241,0.4) 100%)'; this.querySelector('.sc-inner').style.background='rgba(10,10,22,0.95)'" onmouseleave="this.style.transform='translateY(0)'; this.style.background='linear-gradient(135deg, rgba(99,102,241,0.5) 0%, rgba(139,92,246,0.3) 50%, rgba(99,102,241,0.1) 100%)'; this.querySelector('.sc-inner').style.background='rgba(10,10,20,0.92)'">
-        <div class="sc-inner" style="background: rgba(10,10,20,0.92); border-radius: 18px; padding: 36px 40px; height: 100%; box-sizing: border-box; transition: background 0.4s; display: flex; align-items: flex-start; gap: 28px;">
-          <div style="width: 52px; height: 52px; background: linear-gradient(135deg, rgba(99,102,241,0.2) 0%, rgba(139,92,246,0.15) 100%); border: 1px solid rgba(99,102,241,0.3); border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          </div>
-          <div>
-            <h3 style="font-family: 'Inter', sans-serif; font-size: 19px; font-weight: 650; color: #f1f5f9; margin: 0 0 12px; letter-spacing: -0.02em;">Reporting direction</h3>
-            <p style="font-family: 'Inter', sans-serif; font-size: 14px; color: #64748b; line-height: 1.75; margin: 0;">Tableaux de bord temps réel : rentabilité projet, taux d'occupation techniciens, délais moyens, satisfaction client.</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-
-  <style>
-    @keyframes pulse-red {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.85); }
-    }
-    @keyframes pulse-indigo {
-      0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(99,102,241,0.4); }
-      50% { opacity: 0.6; transform: scale(0.85); box-shadow: 0 0 0 6px rgba(99,102,241,0); }
-    }
-    @media (max-width: 768px) {
-      .problems-grid { grid-template-columns: 1fr !important; }
-      #solution > div > div:nth-child(3) { grid-template-columns: 1fr !important; }
-      #solution > div > div:nth-child(4) { grid-template-columns: 1fr !important; }
-      .sc-inner[style*="display: flex"] { flex-direction: column; gap: 16px !important; }
-    }
-  </style>
-
-</section>
-
-<!-- PART 3: STATS, TIMELINE, TÉMOIGNAGE, CTA, FOOTER + JS -->
-
-<section id="resultats" style="padding:120px 0;background:linear-gradient(180deg,#0a0a0f 0%,#0d0d18 100%);position:relative;overflow:hidden;">
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 50%,rgba(6,182,212,0.05) 0%,transparent 70%);pointer-events:none;"></div>
-  <div style="max-width:1200px;margin:0 auto;padding:0 40px;">
-    <div style="text-align:center;margin-bottom:80px;">
-      <div class="fade-up" style="display:inline-flex;align-items:center;gap:8px;background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.2);border-radius:50px;padding:6px 16px;margin-bottom:24px;">
-        <div style="width:6px;height:6px;background:#06b6d4;border-radius:50%;box-shadow:0 0 8px #06b6d4;"></div>
-        <span style="font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#06b6d4;">Résultats prouvés</span>
-      </div>
-      <h2 class="fade-up" style="font-size:clamp(32px,4vw,52px);font-weight:800;color:#f8fafc;margin:0 0 16px;letter-spacing:-0.02em;line-height:1.15;">Des résultats mesurables dès le premier mois</h2>
-    </div>
-    <div class="stats-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;">
-      <div class="fade-up stat-card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:24px;padding:48px 32px;text-align:center;position:relative;overflow:hidden;transition:all 0.4s ease;cursor:default;">
-        <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(6,182,212,0.08) 0%,transparent 60%);pointer-events:none;"></div>
-        <div style="font-size:clamp(48px,5vw,72px);font-weight:900;background:linear-gradient(135deg,#06b6d4,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:8px;">
-          <span class="counter" data-target="45">0</span><span style="-webkit-text-fill-color:transparent;background:linear-gradient(135deg,#06b6d4,#818cf8);-webkit-background-clip:text;background-clip:text;">%</span>
-        </div>
-        <p style="font-size:15px;color:#94a3b8;line-height:1.5;margin:0;font-weight:500;">de temps administratif économisé</p>
-      </div>
-      <div class="fade-up stat-card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:24px;padding:48px 32px;text-align:center;position:relative;overflow:hidden;transition:all 0.4s ease;cursor:default;">
-        <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(129,140,248,0.08) 0%,transparent 60%);pointer-events:none;"></div>
-        <div style="font-size:clamp(48px,5vw,72px);font-weight:900;background:linear-gradient(135deg,#818cf8,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:8px;">
-          <span class="counter" data-target="3">0</span><span style="-webkit-text-fill-color:transparent;background:linear-gradient(135deg,#818cf8,#c084fc);-webkit-background-clip:text;background-clip:text;">x</span>
-        </div>
-        <p style="font-size:15px;color:#94a3b8;line-height:1.5;margin:0;font-weight:500;">moins d'erreurs de coordination</p>
-      </div>
-      <div class="fade-up stat-card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:24px;padding:48px 32px;text-align:center;position:relative;overflow:hidden;transition:all 0.4s ease;cursor:default;">
-        <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(34,197,94,0.08) 0%,transparent 60%);pointer-events:none;"></div>
-        <div style="font-size:clamp(48px,5vw,72px);font-weight:900;background:linear-gradient(135deg,#22c55e,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:8px;">
-          <span class="counter" data-target="100">0</span><span style="-webkit-text-fill-color:transparent;background:linear-gradient(135deg,#22c55e,#06b6d4);-webkit-background-clip:text;background-clip:text;">%</span>
-        </div>
-        <p style="font-size:15px;color:#94a3b8;line-height:1.5;margin:0;font-weight:500;">de conformité réglementaire</p>
-      </div>
-      <div class="fade-up stat-card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:24px;padding:48px 32px;text-align:center;position:relative;overflow:hidden;transition:all 0.4s ease;cursor:default;">
-        <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(251,146,60,0.08) 0%,transparent 60%);pointer-events:none;"></div>
-        <div style="font-size:clamp(48px,5vw,72px);font-weight:900;background:linear-gradient(135deg,#fb923c,#f43f5e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:8px;">
-          <span class="counter" data-target="6">0</span><span style="font-size:clamp(28px,2.5vw,40px);-webkit-text-fill-color:transparent;background:linear-gradient(135deg,#fb923c,#f43f5e);-webkit-background-clip:text;background-clip:text;"> mois</span>
-        </div>
-        <p style="font-size:15px;color:#94a3b8;line-height:1.5;margin:0;font-weight:500;">pour un ROI positif</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<style>
-.stat-card:hover {
-  transform:translateY(-4px);
-  border-color:rgba(6,182,212,0.2) !important;
-  background:rgba(255,255,255,0.05) !important;
-  box-shadow:0 20px 60px rgba(0,0,0,0.3),0 0 0 1px rgba(6,182,212,0.1);
-}
-@media(max-width:768px){
-  .stats-grid{grid-template-columns:repeat(2,1fr) !important;gap:12px !important;}
-}
-@media(max-width:480px){
-  .stats-grid{grid-template-columns:1fr !important;}
-}
-</style>
-
-<section id="timeline" style="padding:120px 0;background:#0a0a0f;position:relative;overflow:hidden;">
-  <div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,rgba(6,182,212,0.15) 20%,rgba(129,140,248,0.15) 80%,transparent);transform:translateX(-50%);pointer-events:none;"></div>
-  <div style="max-width:900px;margin:0 auto;padding:0 40px;">
-    <div style="text-align:center;margin-bottom:80px;">
-      <div class="fade-up" style="display:inline-flex;align-items:center;gap:8px;background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.2);border-radius:50px;padding:6px 16px;margin-bottom:24px;">
-        <div style="width:6px;height:6px;background:#818cf8;border-radius:50%;box-shadow:0 0 8px #818cf8;"></div>
-        <span style="font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#818cf8;">Mise en place</span>
-      </div>
-      <h2 class="fade-up" style="font-size:clamp(32px,4vw,52px);font-weight:800;color:#f8fafc;margin:0;letter-spacing:-0.02em;line-height:1.15;">Votre transformation en 4 étapes</h2>
-    </div>
-    <div style="position:relative;">
-      <svg class="timeline-line" style="position:absolute;left:50%;top:0;transform:translateX(-50%);height:100%;overflow:visible;pointer-events:none;" width="2" preserveAspectRatio="none">
-        <line id="tl-line" x1="1" y1="0" x2="1" y2="100%" stroke="url(#tlGrad)" stroke-width="2" stroke-dasharray="1000" stroke-dashoffset="1000"/>
-        <defs>
-          <linearGradient id="tlGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#06b6d4"/>
-            <stop offset="100%" stop-color="#818cf8"/>
-          </linearGradient>
-        </defs>
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <a href="#" class="logo">BE <span>Pilot</span></a>
+    <nav class="nav" id="mainNav">
+      <a href="#problemes">ProblÃ¨mes</a>
+      <a href="#solution">Solution</a>
+      <a href="#comparatif">Comparatif</a>
+      <a href="#processus">Processus</a>
+      <a href="#contact" class="btn-nav">Demander une dÃ©mo</a>
+    </nav>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
       </svg>
-      <div class="timeline-step fade-up" style="display:flex;align-items:flex-start;gap:40px;margin-bottom:64px;flex-direction:row;">
-        <div style="flex:1;text-align:right;padding-top:4px;">
-          <span style="font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#06b6d4;">Semaine 1-2</span>
-          <h3 style="font-size:22px;font-weight:700;color:#f8fafc;margin:8px 0;">Audit & Configuration</h3>
-          <p style="font-size:15px;color:#64748b;line-height:1.7;margin:0;">Nous analysons vos processus actuels et configurons BE Pilot selon votre organisation.</p>
-        </div>
-        <div style="flex-shrink:0;width:48px;height:48px;background:linear-gradient(135deg,#06b6d4,#818cf8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;box-shadow:0 0 20px rgba(6,182,212,0.4);position:relative;z-index:2;">1</div>
-        <div style="flex:1;"></div>
+    </button>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <p class="section-label fade-in">Gestion de projets cuisine professionnelle</p>
+    <h1 class="hero-title fade-in">Pilotez chaque installation. De la commande Ã  la rÃ©ception.</h1>
+    <p class="hero-subtitle fade-in">Un outil de suivi conÃ§u pour les Ã©quipes qui installent et maintiennent des cuisines professionnelles.</p>
+    <div class="hero-cta fade-in">
+      <a href="#contact" class="btn-primary">Demander une dÃ©mo</a>
+      <a href="#solution" class="btn-secondary">Voir comment Ã§a marche</a>
+    </div>
+  </div>
+</section>
+
+<!-- Reassurance -->
+<div class="reassurance">
+  <div class="reassurance-grid">
+    <div class="reassurance-item fade-in">
+      <div class="reassurance-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       </div>
-      <div class="timeline-step fade-up" style="display:flex;align-items:flex-start;gap:40px;margin-bottom:64px;flex-direction:row;">
-        <div style="flex:1;"></div>
-        <div style="flex-shrink:0;width:48px;height:48px;background:linear-gradient(135deg,#818cf8,#c084fc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;box-shadow:0 0 20px rgba(129,140,248,0.4);position:relative;z-index:2;">2</div>
-        <div style="flex:1;padding-top:4px;">
-          <span style="font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#818cf8;">Semaine 3-4</span>
-          <h3 style="font-size:22px;font-weight:700;color:#f8fafc;margin:8px 0;">Migration & Import</h3>
-          <p style="font-size:15px;color:#64748b;line-height:1.7;margin:0;">Vos données existantes sont importées. Projets en cours, clients, équipements — rien n'est perdu.</p>
-        </div>
+      <span class="reassurance-text">DÃ©ployÃ© en 2 semaines</span>
+    </div>
+    <div class="reassurance-item fade-in">
+      <div class="reassurance-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       </div>
-      <div class="timeline-step fade-up" style="display:flex;align-items:flex-start;gap:40px;margin-bottom:64px;flex-direction:row;">
-        <div style="flex:1;text-align:right;padding-top:4px;">
-          <span style="font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#22c55e;">Mois 2</span>
-          <h3 style="font-size:22px;font-weight:700;color:#f8fafc;margin:8px 0;">Formation & Déploiement</h3>
-          <p style="font-size:15px;color:#64748b;line-height:1.7;margin:0;">Vos équipes sont formées sur site. L'adoption est progressive et accompagnée.</p>
-        </div>
-        <div style="flex-shrink:0;width:48px;height:48px;background:linear-gradient(135deg,#22c55e,#06b6d4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;box-shadow:0 0 20px rgba(34,197,94,0.4);position:relative;z-index:2;">3</div>
-        <div style="flex:1;"></div>
+      <span class="reassurance-text">100% personnalisÃ©</span>
+    </div>
+    <div class="reassurance-item fade-in">
+      <div class="reassurance-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
       </div>
-      <div class="timeline-step fade-up" style="display:flex;align-items:flex-start;gap:40px;flex-direction:row;">
-        <div style="flex:1;"></div>
-        <div style="flex-shrink:0;width:48px;height:48px;background:linear-gradient(135deg,#fb923c,#f43f5e);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;box-shadow:0 0 20px rgba(251,146,60,0.4);position:relative;z-index:2;">4</div>
-        <div style="flex:1;padding-top:4px;">
-          <span style="font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#fb923c;">Mois 3+</span>
-          <h3 style="font-size:22px;font-weight:700;color:#f8fafc;margin:8px 0;">Optimisation continue</h3>
-          <p style="font-size:15px;color:#64748b;line-height:1.7;margin:0;">Support dédié, mises à jour régulières, et ajustements selon vos retours terrain.</p>
+      <span class="reassurance-text">Support local</span>
+    </div>
+  </div>
+</div>
+
+<!-- ProblÃ¨mes -->
+<section class="section section-gray" id="problemes">
+  <div class="container">
+    <p class="section-label fade-in">Constat</p>
+    <h2 class="section-title fade-in">Votre mÃ©tier est complexe. Vos outils ne suivent pas.</h2>
+    <p class="section-subtitle fade-in">Les entreprises d'installation de cuisines professionnelles jonglent entre commercial, montage et SAV avec des outils inadaptÃ©s.</p>
+    <div class="problems-grid">
+      <div class="problem-card fade-in">
+        <div class="problem-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
         </div>
+        <h3>Coordination fragmentÃ©e</h3>
+        <p>Commercial, montage et SAV travaillent en silos. Informations perdues entre les Ã©quipes.</p>
+      </div>
+      <div class="problem-card fade-in">
+        <div class="problem-card-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <h3>Planning techniciens manuel</h3>
+        <p>Interventions gÃ©rÃ©es par tÃ©lÃ©phone et tableur. Conflits et oublis frÃ©quents.</p>
+      </div>
+      <div class="problem-card fade-in">
+        <div class="problem-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <h3>Suivi maintenance rÃ©glementaire</h3>
+        <p>Contrats et contrÃ´les obligatoires (fluides frigorigÃ¨nes, CERFA) suivis Ã  la main.</p>
+      </div>
+      <div class="problem-card fade-in">
+        <div class="problem-card-icon">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        </div>
+        <h3>Aucune vision consolidÃ©e</h3>
+        <p>Impossible de voir en un coup d'Åil l'Ã©tat de tous vos projets en cours.</p>
       </div>
     </div>
   </div>
 </section>
 
-<style>
-@media(max-width:640px){
-  .timeline-step{flex-direction:column !important;gap:16px !important;}
-  .timeline-step > div:first-child,.timeline-step > div:last-child{text-align:left !important;}
-  .timeline-line{display:none;}
-}
-</style>
-
-<section id="temoignage" style="padding:120px 0;background:linear-gradient(180deg,#0a0a0f 0%,#0d0d18 100%);position:relative;overflow:hidden;">
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 30% 60%,rgba(129,140,248,0.06) 0%,transparent 70%);pointer-events:none;"></div>
-  <div style="max-width:900px;margin:0 auto;padding:0 40px;">
-    <div class="fade-up" style="position:relative;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:28px;padding:64px;overflow:hidden;">
-      <div style="position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,#06b6d4,#818cf8,#c084fc);border-radius:4px 0 0 4px;"></div>
-      <div style="position:absolute;inset:0;background:radial-gradient(circle at 0% 50%,rgba(6,182,212,0.05) 0%,transparent 60%);pointer-events:none;"></div>
-      <div style="position:absolute;top:40px;left:64px;font-size:120px;line-height:1;color:rgba(6,182,212,0.08);font-family:Georgia,serif;pointer-events:none;user-select:none;">«</div>
-      <p style="font-size:clamp(18px,2.2vw,22px);color:#cbd5e1;line-height:1.8;margin:0 0 40px;font-style:italic;position:relative;z-index:1;">« Avant BE Pilot, on passait nos lundis matin à recoller les morceaux de la semaine précédente. Aujourd'hui, chaque technicien sait exactement où il va et avec quel matériel. On a divisé nos temps de coordination par trois. »</p>
-      <div style="display:flex;align-items:center;gap:20px;position:relative;z-index:1;">
-        <div style="width:52px;height:52px;background:linear-gradient(135deg,#06b6d4,#818cf8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;flex-shrink:0;">M</div>
-        <div>
-          <div style="font-size:16px;font-weight:700;color:#f8fafc;">Marc Dubois, Directeur Technique</div>
-          <div style="font-size:14px;color:#64748b;margin-top:2px;">— 15 ans d'expérience en cuisine collective</div>
+<!-- Solution -->
+<section class="section" id="solution">
+  <div class="container">
+    <p class="section-label fade-in">Solution</p>
+    <h2 class="section-title fade-in">BE Pilot connecte vos Ã©quipes sur un seul outil</h2>
+    <p class="section-subtitle fade-in">Cinq modules intÃ©grÃ©s pour couvrir l'ensemble de votre activitÃ©, du devis au SAV.</p>
+    <div class="solution-grid">
+      <div class="solution-card fade-in">
+        <div class="solution-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
         </div>
-        <div style="margin-left:auto;display:flex;gap:4px;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="#06b6d4"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="#06b6d4"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="#06b6d4"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="#06b6d4"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="#06b6d4"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <h3>Pilotage projet</h3>
+        <p>De l'Ã©tude Ã  la rÃ©ception, chaque Ã©tape tracÃ©e avec historique complet.</p>
+      </div>
+      <div class="solution-card fade-in">
+        <div class="solution-card-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         </div>
+        <h3>Planning techniciens</h3>
+        <p>Affectation, dÃ©placements, disponibilitÃ©s en temps rÃ©el pour toute l'Ã©quipe.</p>
+      </div>
+      <div class="solution-card fade-in">
+        <div class="solution-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <h3>SAV et Maintenance</h3>
+        <p>Contrats, interventions, historique par Ã©quipement centralisÃ©s.</p>
+      </div>
+      <div class="solution-card fade-in">
+        <div class="solution-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        </div>
+        <h3>TraÃ§abilitÃ© rÃ©glementaire</h3>
+        <p>CERFA, fluides frigorigÃ¨nes, contrÃ´les obligatoires : tout est suivi.</p>
+      </div>
+      <div class="solution-card fade-in">
+        <div class="solution-card-icon">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <h3>Reporting direction</h3>
+        <p>Vision consolidÃ©e de tous les chantiers, marges et dÃ©lais en un clic.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section id="contact" style="padding:140px 0;background:linear-gradient(180deg,#0d0d18 0%,#06060f 100%);position:relative;overflow:hidden;">
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(6,182,212,0.08) 0%,rgba(129,140,248,0.06) 40%,transparent 70%);pointer-events:none;"></div>
-  <div style="position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(6,182,212,0.06) 0%,transparent 70%);pointer-events:none;"></div>
-  <div style="max-width:760px;margin:0 auto;padding:0 40px;text-align:center;position:relative;z-index:2;">
-    <div class="fade-up" style="display:inline-flex;align-items:center;gap:8px;background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.2);border-radius:50px;padding:6px 16px;margin-bottom:32px;">
-      <div style="width:6px;height:6px;background:#06b6d4;border-radius:50%;box-shadow:0 0 8px #06b6d4;animation:pulse-dot 2s ease-in-out infinite;"></div>
-      <span style="font-size:12px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#06b6d4;">Démo gratuite</span>
-    </div>
-    <h2 class="fade-up" style="font-size:clamp(36px,5vw,64px);font-weight:900;color:#f8fafc;margin:0 0 20px;letter-spacing:-0.03em;line-height:1.1;">Prêt à piloter vos projets autrement ?</h2>
-    <p class="fade-up" style="font-size:clamp(16px,2vw,20px);color:#64748b;margin:0 0 56px;line-height:1.7;">Demandez une démonstration gratuite et personnalisée de BE Pilot.</p>
-    <div class="fade-up" style="margin-bottom:48px;">
-      <a href="mailto:notitiacorp@gmail.com" class="magnetic-btn" style="display:inline-flex;align-items:center;gap:12px;padding:20px 48px;background:linear-gradient(135deg,#06b6d4,#818cf8);border-radius:100px;font-size:18px;font-weight:700;color:#fff;text-decoration:none;letter-spacing:-0.01em;box-shadow:0 0 0 1px rgba(6,182,212,0.3),0 20px 60px rgba(6,182,212,0.3),0 0 80px rgba(129,140,248,0.2);transition:all 0.3s ease;position:relative;overflow:hidden;">
-        <span style="position:relative;z-index:1;">Planifier ma démo gratuite</span>
-        <svg style="position:relative;z-index:1;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);pointer-events:none;"></div>
-      </a>
-    </div>
-    <div class="fade-up" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:32px 40px;margin-bottom:32px;display:inline-block;">
-      <div style="font-size:16px;font-weight:600;color:#e2e8f0;margin-bottom:8px;">Quentin CONVERT</div>
-      <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:20px;">
-        <a href="mailto:notitiacorp@gmail.com" style="font-size:15px;color:#06b6d4;text-decoration:none;display:flex;align-items:center;gap:8px;transition:color 0.2s;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          notitiacorp@gmail.com
-        </a>
-        <a href="tel:0671902513" style="font-size:15px;color:#818cf8;text-decoration:none;display:flex;align-items:center;gap:8px;transition:color 0.2s;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>
-          06 71 90 25 13
-        </a>
+<!-- Stats -->
+<section class="section section-orange" id="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item fade-in">
+        <div class="stat-number"><span class="counter" data-target="45">0</span>%</div>
+        <div class="stat-label">de temps admin Ã©conomisÃ©</div>
       </div>
-    </div>
-    <div class="fade-up" style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;">
-      <div style="display:flex;align-items:center;gap:8px;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        <span style="font-size:13px;color:#64748b;">Réponse sous 24h</span>
+      <div class="stat-item fade-in">
+        <div class="stat-number"><span class="counter" data-target="3">0</span>x</div>
+        <div class="stat-label">moins d'erreurs de planning</div>
       </div>
-      <div style="width:1px;height:16px;background:rgba(255,255,255,0.1);"></div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        <span style="font-size:13px;color:#64748b;">Démo de 30 minutes</span>
+      <div class="stat-item fade-in">
+        <div class="stat-number"><span class="counter" data-target="100">0</span>%</div>
+        <div class="stat-label">de conformitÃ© rÃ©glementaire</div>
       </div>
-      <div style="width:1px;height:16px;background:rgba(255,255,255,0.1);"></div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        <span style="font-size:13px;color:#64748b;">Sans engagement</span>
+      <div class="stat-item fade-in">
+        <div class="stat-number">ROI en <span class="counter" data-target="6">0</span> mois</div>
+        <div class="stat-label">retour sur investissement rapide</div>
       </div>
     </div>
   </div>
 </section>
 
-<footer style="background:#06060f;border-top:1px solid rgba(255,255,255,0.05);padding:40px;">
-  <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
-    <div style="font-size:14px;color:#334155;">© 2025 BE Pilot par Notitia Corp. Tous droits réservés.</div>
-    <div style="display:flex;gap:24px;">
-      <a href="#" style="font-size:14px;color:#475569;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#94a3b8'" onmouseout="this.style.color='#475569'">Mentions légales</a>
-      <a href="#" style="font-size:14px;color:#475569;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#94a3b8'" onmouseout="this.style.color='#475569'">Politique de confidentialité</a>
+<!-- Comparatif -->
+<section class="section" id="comparatif">
+  <div class="container">
+    <div class="comparison-intro fade-in">
+      <p class="section-label">Comparatif</p>
+      <h2 class="section-title">5x moins cher qu'Orgasoftware. 100% adaptÃ© Ã  votre mÃ©tier.</h2>
+    </div>
+    <div class="fade-in" style="overflow-x:auto;">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>CritÃ¨re</th>
+            <th class="col-competitor">Orgasoftware</th>
+            <th class="col-bepilot">BE Pilot</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Prix</td>
+            <td class="cell-negative">~800 â¬/mois</td>
+            <td class="cell-positive">150 â¬/mois</td>
+          </tr>
+          <tr>
+            <td>DÃ©ploiement</td>
+            <td class="cell-negative">4-6 mois</td>
+            <td class="cell-positive">2 semaines</td>
+          </tr>
+          <tr>
+            <td>Personnalisation</td>
+            <td class="cell-negative">GÃ©nÃ©rique</td>
+            <td class="cell-positive">100% sur-mesure</td>
+          </tr>
+          <tr>
+            <td>Support</td>
+            <td class="cell-negative">Hotline nationale</td>
+            <td class="cell-positive">Local et rÃ©actif</td>
+          </tr>
+          <tr>
+            <td>Formation</td>
+            <td class="cell-negative">Plusieurs semaines</td>
+            <td class="cell-positive">1 journÃ©e</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
+</section>
+
+<!-- Processus -->
+<section class="section section-gray" id="processus">
+  <div class="container">
+    <div class="fade-in" style="text-align:center;margin-bottom:8px;">
+      <p class="section-label">DÃ©marrage</p>
+      <h2 class="section-title" style="max-width:600px;margin-left:auto;margin-right:auto;">OpÃ©rationnel en 2 semaines</h2>
+      <p class="section-subtitle" style="margin:0 auto;">Un processus simple et rapide pour ne pas perturber votre activitÃ©.</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-step fade-in">
+        <div class="process-number">1</div>
+        <h3>Audit gratuit</h3>
+        <p>On analyse vos processus en 48h pour identifier les gains rapides.</p>
+      </div>
+      <div class="process-step fade-in">
+        <div class="process-number">2</div>
+        <h3>Prototype</h3>
+        <p>Vous validez la solution avant tout dÃ©veloppement.</p>
+      </div>
+      <div class="process-step fade-in">
+        <div class="process-number">3</div>
+        <h3>DÃ©veloppement</h3>
+        <p>Votre outil sur-mesure construit en moins de 2 semaines.</p>
+      </div>
+      <div class="process-step fade-in">
+        <div class="process-number">4</div>
+        <h3>DÃ©ploiement</h3>
+        <p>Formation Ã©quipe + support continu pour garantir l'adoption.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Final -->
+<section class="section section-anthracite" id="contact">
+  <div class="cta-final">
+    <div class="container">
+      <h2 class="section-title fade-in">PrÃªt Ã  simplifier votre gestion ?</h2>
+      <p class="section-subtitle fade-in">Demandez un audit gratuit. RÃ©ponse sous 48h. Sans engagement.</p>
+      <div class="fade-in">
+        <a href="mailto:notitiacorp@gmail.com?subject=Demande%20de%20d%C3%A9mo%20BE%20Pilot" class="btn-primary" style="font-size:18px;padding:16px 40px;margin-bottom:32px;">Prendre contact</a>
+      </div>
+      <div class="cta-contact fade-in">
+        <strong>Quentin CONVERT</strong><br>
+        <a href="mailto:notitiacorp@gmail.com">notitiacorp@gmail.com</a><br>
+        <a href="tel:+33671902513">06 71 90 25 13</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  &copy; 2025 BE Pilot â Notitia Corp. Tous droits rÃ©servÃ©s.
 </footer>
 
-<canvas id="particleCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;"></canvas>
-
-<style>
-@keyframes pulse-dot{
-  0%,100%{opacity:1;transform:scale(1);}
-  50%{opacity:0.5;transform:scale(1.5);}
-}
-.fade-up{
-  opacity:0;
-  transform:translateY(40px);
-  transition:opacity 0.8s ease,transform 0.8s ease;
-}
-.fade-up.visible{
-  opacity:1;
-  transform:translateY(0);
-}
-</style>
-
 <script>
-(function(){
+  // Mobile menu toggle
+  document.getElementById('mobileToggle').addEventListener('click', function() {
+    document.getElementById('mainNav').classList.toggle('open');
+  });
 
-// ============================================================
-// PARTICLE CANVAS
-// ============================================================
-const pCanvas = document.getElementById('particleCanvas');
-const pCtx = pCanvas.getContext('2d');
-let particles = [];
-function resizePC(){
-  pCanvas.width = window.innerWidth;
-  pCanvas.height = window.innerHeight;
-}
-resizePC();
-window.addEventListener('resize', resizePC);
-const pColors = ['rgba(6,182,212,', 'rgba(129,140,248,', 'rgba(192,132,252,'];
-function createParticle(){
-  return {
-    x: Math.random() * window.innerWidth,
-    y: window.innerHeight + Math.random() * 100,
-    size: Math.random() * 2 + 1,
-    speedY: Math.random() * 0.6 + 0.2,
-    speedX: (Math.random() - 0.5) * 0.3,
-    opacity: Math.random() * 0.2 + 0.05,
-    color: pColors[Math.floor(Math.random() * pColors.length)],
-    opacityDir: (Math.random() > 0.5 ? 1 : -1) * 0.002
-  };
-}
-for(let i=0;i<60;i++){
-  let p = createParticle();
-  p.y = Math.random() * window.innerHeight;
-  particles.push(p);
-}
-function animateParticles(){
-  pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
-  particles.forEach(function(p,i){
-    p.y -= p.speedY;
-    p.x += p.speedX;
-    p.opacity += p.opacityDir;
-    if(p.opacity > 0.3 || p.opacity < 0.05) p.opacityDir *= -1;
-    if(p.y < -10 || p.x < -10 || p.x > window.innerWidth + 10){
-      particles[i] = createParticle();
-    }
-    pCtx.beginPath();
-    pCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-    pCtx.fillStyle = p.color + p.opacity + ')';
-    pCtx.fill();
-  });
-  requestAnimationFrame(animateParticles);
-}
-animateParticles();
-
-// ============================================================
-// HERO CANVAS DOT GRID
-// ============================================================
-const heroCanvas = document.getElementById('heroCanvas');
-if(heroCanvas){
-  const hCtx = heroCanvas.getContext('2d');
-  let mouseX = -9999, mouseY = -9999;
-  let dots = [];
-  const spacing = 40;
-  let time = 0;
-  function buildDots(){
-    dots = [];
-    const cols = Math.ceil(heroCanvas.width / spacing) + 1;
-    const rows = Math.ceil(heroCanvas.height / spacing) + 1;
-    for(let r=0;r<rows;r++){
-      for(let c=0;c<cols;c++){
-        dots.push({x:c*spacing, y:r*spacing, phase:Math.random()*Math.PI*2});
-      }
-    }
-  }
-  function resizeHero(){
-    heroCanvas.width = heroCanvas.offsetWidth;
-    heroCanvas.height = heroCanvas.offsetHeight;
-    buildDots();
-  }
-  resizeHero();
-  window.addEventListener('resize', resizeHero);
-  heroCanvas.addEventListener('mousemove', function(e){
-    const rect = heroCanvas.getBoundingClientRect();
-    mouseX = e.clientX - rect.left;
-    mouseY = e.clientY - rect.top;
-  });
-  heroCanvas.addEventListener('mouseleave', function(){
-    mouseX = -9999;
-    mouseY = -9999;
-  });
-  function drawDots(){
-    hCtx.clearRect(0,0,heroCanvas.width,heroCanvas.height);
-    time += 0.02;
-    dots.forEach(function(d){
-      const dx = mouseX - d.x;
-      const dy = mouseY - d.y;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      const maxDist = 120;
-      let glow = 0;
-      if(dist < maxDist){
-        glow = (1 - dist/maxDist);
-      }
-      const breathe = 0.15 + Math.sin(time + d.phase) * 0.05;
-      const finalOpacity = Math.max(breathe, glow * 0.9);
-      const radius = 1.5 + glow * 2;
-      if(glow > 0.1){
-        hCtx.beginPath();
-        hCtx.arc(d.x, d.y, radius + 4, 0, Math.PI * 2);
-        hCtx.fillStyle = 'rgba(6,182,212,' + (glow * 0.15) + ')';
-        hCtx.fill();
-      }
-      hCtx.beginPath();
-      hCtx.arc(d.x, d.y, radius, 0, Math.PI * 2);
-      if(glow > 0.1){
-        hCtx.fillStyle = 'rgba(6,182,212,' + finalOpacity + ')';
-      } else {
-        hCtx.fillStyle = 'rgba(148,163,184,' + finalOpacity + ')';
-      }
-      hCtx.fill();
+  // Close mobile menu on link click
+  document.querySelectorAll('.nav a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      document.getElementById('mainNav').classList.remove('open');
     });
-    requestAnimationFrame(drawDots);
-  }
-  drawDots();
-}
-
-// ============================================================
-// SPOTLIGHT MOUSE FOLLOW
-// ============================================================
-const spotlight = document.querySelector('.spotlight');
-if(spotlight){
-  window.addEventListener('mousemove', function(e){
-    spotlight.style.setProperty('--mouse-x', e.clientX + 'px');
-    spotlight.style.setProperty('--mouse-y', e.clientY + 'px');
   });
-}
 
-// ============================================================
-// PROGRESS BAR
-// ============================================================
-const progressBar = document.querySelector('.progress-bar');
-if(progressBar){
-  window.addEventListener('scroll', function(){
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    progressBar.style.width = pct + '%';
+  // Reading progress bar
+  window.addEventListener('scroll', function() {
+    var winScroll = document.documentElement.scrollTop;
+    var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var scrolled = (winScroll / height) * 100;
+    document.getElementById('progress-bar').style.width = scrolled + '%';
   });
-}
 
-// ============================================================
-// NAV SCROLL
-// ============================================================
-const nav = document.querySelector('nav') || document.querySelector('[id="nav"]');
-const mainNav = document.querySelector('.main-nav') || nav;
-window.addEventListener('scroll', function(){
-  if(mainNav){
-    if(window.pageYOffset > 50){
-      mainNav.style.background = 'rgba(6,6,15,0.95)';
-      mainNav.style.backdropFilter = 'blur(20px)';
-      mainNav.style.borderBottomColor = 'rgba(255,255,255,0.08)';
-    } else {
-      mainNav.style.background = 'rgba(6,6,15,0.7)';
-      mainNav.style.backdropFilter = 'blur(12px)';
-      mainNav.style.borderBottomColor = 'rgba(255,255,255,0.05)';
-    }
-  }
-});
-document.querySelectorAll('a[href^="#"]').forEach(function(a){
-  a.addEventListener('click', function(e){
-    const target = document.querySelector(this.getAttribute('href'));
-    if(target){
-      e.preventDefault();
-      target.scrollIntoView({behavior:'smooth', block:'start'});
-    }
-  });
-});
-
-// ============================================================
-// COUNTER ANIMATION
-// ============================================================
-function easeOutExpo(t){
-  return t===1 ? 1 : 1 - Math.pow(2, -10*t);
-}
-const counters = document.querySelectorAll('.counter');
-const counterObs = new IntersectionObserver(function(entries){
-  entries.forEach(function(entry){
-    if(entry.isIntersecting && !entry.target._counted){
-      entry.target._counted = true;
-      const target = parseInt(entry.target.getAttribute('data-target'));
-      const duration = 2000;
-      const start = performance.now();
-      function step(now){
-        const elapsed = now - start;
-        const progress = Math.min(elapsed / duration, 1);
-        const value = Math.round(easeOutExpo(progress) * target);
-        entry.target.textContent = value;
-        if(progress < 1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-    }
-  });
-}, {threshold:0.3});
-counters.forEach(function(c){ counterObs.observe(c); });
-
-// ============================================================
-// FADE UP OBSERVER
-// ============================================================
-const fadeEls = document.querySelectorAll('.fade-up');
-const fadeObs = new IntersectionObserver(function(entries){
-  entries.forEach(function(entry, idx){
-    if(entry.isIntersecting){
-      const delay = (entry.target.dataset.delay || 0);
-      setTimeout(function(){
+  // Intersection Observer for fade-in
+  var fadeObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
         entry.target.classList.add('visible');
-      }, delay);
-      fadeObs.unobserve(entry.target);
-    }
-  });
-}, {threshold:0.1, rootMargin:'0px 0px -40px 0px'});
-fadeEls.forEach(function(el, i){
-  if(!el.dataset.delay){
-    const siblings = el.parentElement ? el.parentElement.querySelectorAll('.fade-up') : [el];
-    let idx = 0;
-    siblings.forEach(function(s,j){ if(s===el) idx=j; });
-    el.dataset.delay = idx * 100;
-  }
-  fadeObs.observe(el);
-});
-
-// ============================================================
-// TIMELINE SVG DRAW
-// ============================================================
-const tlContainer = document.getElementById('timeline');
-const tlLine = document.getElementById('tl-line');
-if(tlContainer && tlLine){
-  const totalLength = 800;
-  tlLine.setAttribute('stroke-dasharray', totalLength);
-  tlLine.setAttribute('stroke-dashoffset', totalLength);
-  function updateTimeline(){
-    const rect = tlContainer.getBoundingClientRect();
-    const windowH = window.innerHeight;
-    const start = windowH * 0.8;
-    const end = -rect.height * 0.5;
-    const progress = Math.max(0, Math.min(1, (start - rect.top) / (start - end)));
-    tlLine.setAttribute('stroke-dashoffset', totalLength * (1 - progress));
-  }
-  window.addEventListener('scroll', updateTimeline, {passive:true});
-  updateTimeline();
-}
-
-// ============================================================
-// MAGNETIC BUTTONS
-// ============================================================
-function initMagneticButtons(){
-  document.querySelectorAll('.magnetic-btn').forEach(function(btn){
-    let rect, isNear = false;
-    function onMove(e){
-      rect = btn.getBoundingClientRect();
-      const cx = rect.left + rect.width/2;
-      const cy = rect.top + rect.height/2;
-      const dx = e.clientX - cx;
-      const dy = e.clientY - cy;
-      const dist = Math.sqrt(dx*dx+dy*dy);
-      const maxDist = 100;
-      if(dist < maxDist){
-        isNear = true;
-        const force = (1 - dist/maxDist);
-        const moveX = dx * force * 0.4;
-        const moveY = dy * force * 0.4;
-        btn.style.transform = 'translate(' + moveX + 'px,' + moveY + 'px) scale(1.02)';
-      } else if(isNear){
-        isNear = false;
-        btn.style.transform = 'translate(0,0) scale(1)';
       }
-    }
-    function onLeave(){
-      isNear = false;
-      btn.style.transform = 'translate(0,0) scale(1)';
-      btn.style.transition = 'transform 0.5s cubic-bezier(0.23,1,0.32,1)';
-    }
-    btn.style.transition = 'transform 0.1s ease';
-    window.addEventListener('mousemove', onMove);
-    btn.addEventListener('mouseleave', onLeave);
-  });
-}
-initMagneticButtons();
-
-// ============================================================
-// PROBLEM CARDS CRACK EFFECT
-// ============================================================
-document.querySelectorAll('.problem-card').forEach(function(card){
-  card.addEventListener('mouseenter', function(){
-    this.style.clipPath = 'polygon(0 0,100% 0,100% 85%,95% 88%,97% 100%,0 100%)';
-  });
-  card.addEventListener('mouseleave', function(){
-    this.style.clipPath = 'none';
-  });
-});
-
-// ============================================================
-// SCROLL ANIMATION FOR HERO (GSAP-LIKE)
-// ============================================================
-function animateHero(){
-  const heroTitle = document.querySelector('.hero-title');
-  const heroSub = document.querySelector('.hero-subtitle');
-  const heroCta = document.querySelector('.hero-cta');
-  if(heroTitle){
-    heroTitle.style.opacity='0';
-    heroTitle.style.transform='translateY(60px)';
-    heroTitle.style.transition='opacity 1s ease, transform 1s cubic-bezier(0.23,1,0.32,1)';
-    setTimeout(function(){heroTitle.style.opacity='1';heroTitle.style.transform='translateY(0)';},200);
-  }
-  if(heroSub){
-    heroSub.style.opacity='0';
-    heroSub.style.transform='translateY(40px)';
-    heroSub.style.transition='opacity 1s ease, transform 1s cubic-bezier(0.23,1,0.32,1)';
-    setTimeout(function(){heroSub.style.opacity='1';heroSub.style.transform='translateY(0)';},400);
-  }
-  if(heroCta){
-    heroCta.style.opacity='0';
-    heroCta.style.transform='translateY(30px)';
-    heroCta.style.transition='opacity 1s ease, transform 1s cubic-bezier(0.23,1,0.32,1)';
-    setTimeout(function(){heroCta.style.opacity='1';heroCta.style.transform='translateY(0)';},600);
-  }
-}
-window.addEventListener('DOMContentLoaded', animateHero);
-if(document.readyState !== 'loading') animateHero();
-
-// ============================================================
-// STAGGER GRID ANIMATIONS
-// ============================================================
-function initGridStagger(){
-  const grids = document.querySelectorAll('.stats-grid, .features-grid, .problem-grid');
-  grids.forEach(function(grid){
-    const children = grid.children;
-    Array.from(children).forEach(function(child, i){
-      child.style.transitionDelay = (i * 0.12) + 's';
     });
-  });
-}
-initGridStagger();
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-// ============================================================
-// HOVER GLOW ON STAT CARDS
-// ============================================================
-document.querySelectorAll('.stat-card').forEach(function(card){
-  card.addEventListener('mousemove', function(e){
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    card.style.setProperty('--glow-x', x + 'px');
-    card.style.setProperty('--glow-y', y + 'px');
+  document.querySelectorAll('.fade-in').forEach(function(el) {
+    fadeObserver.observe(el);
   });
-});
 
-})();
-</script></body></html>
+  // Animated counters
+  var counterObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var counter = entry.target;
+        var target = parseInt(counter.getAttribute('data-target'));
+        var duration = 1500;
+        var startTime = null;
+
+        function animate(currentTime) {
+          if (!startTime) startTime = currentTime;
+          var progress = Math.min((currentTime - startTime) / duration, 1);
+          var eased = 1 - Math.pow(1 - progress, 3);
+          counter.textContent = Math.floor(eased * target);
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            counter.textContent = target;
+          }
+        }
+
+        requestAnimationFrame(animate);
+        counterObserver.unobserve(counter);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.counter').forEach(function(el) {
+    counterObserver.observe(el);
+  });
+</script>
+
+</body>
+</html>
