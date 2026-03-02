@@ -3,354 +3,235 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BE Pilot pour Ragueneau Cuisines Pro | Pilotez vos installations comme vos grands chefs</title>
-<meta name="description" content="BE Pilot - Le logiciel de pilotage de projets conÃ§u pour Ragueneau Cuisines Pro. Suivi installations, planning techniciens, SAV et facturation.">
+<title>BE Pilot | Gestion de Projets Cuisine Professionnelle</title>
+<meta name="description" content="Pilotez vos projets de cuisine collective avec une solution tout-en-un : du devis au SAV, en passant par le planning terrain et la traÃ§abilitÃ© rÃ©glementaire.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
---white:#ffffff;--gray-50:#f8f9fa;--gray-100:#f1f3f5;--gray-200:#e9ecef;--gray-300:#dee2e6;--gray-400:#ced4da;--gray-500:#adb5bd;--gray-600:#6c757d;--gray-700:#495057;--gray-800:#343a40;--gray-900:#212529;
---steel:#4a5568;--steel-light:#718096;--steel-dark:#2d3748;
---accent:#e05a2b;--accent-light:#f0764a;--accent-dark:#c44a1f;--accent-glow:rgba(224,90,43,0.15);
---font-main:'Segoe UI',system-ui,-apple-system,sans-serif;
---shadow-sm:0 1px 3px rgba(0,0,0,0.08);--shadow-md:0 4px 12px rgba(0,0,0,0.1);--shadow-lg:0 12px 40px rgba(0,0,0,0.12);
---radius:12px;--radius-sm:8px;
+--bg:#050810;--bg2:#0a0f1a;--cyan:#00d4ff;--cyan2:#00b8d9;
+--violet:#7c3aed;--violet2:#a855f7;--blue:#1e40af;--blue2:#3b82f6;
+--white:#ffffff;--gray:#94a3b8;--gray2:#64748b;--glass:rgba(255,255,255,0.04);
+--glass-border:rgba(255,255,255,0.08);--glow:0 0 30px rgba(0,212,255,0.3);
 }
 html{scroll-behavior:smooth;font-size:16px}
-body{font-family:var(--font-main);color:var(--gray-800);background:var(--white);line-height:1.6;overflow-x:hidden}
-img{max-width:100%;display:block}
-a{text-decoration:none;color:inherit}
-.container{max-width:1140px;margin:0 auto;padding:0 24px}
-
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--white);overflow-x:hidden;line-height:1.7}
+canvas#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.container{max-width:1200px;margin:0 auto;padding:0 24px;position:relative;z-index:2}
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--cyan),var(--violet));border-radius:3px}
+/* ANIMATED GRADIENT TEXT */
+.gradient-text{background:linear-gradient(135deg,var(--cyan),var(--violet2),var(--cyan),var(--blue2));background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradientShift 4s ease infinite}
+@keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 /* NAV */
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray-200);transition:box-shadow .3s}
-.nav.scrolled{box-shadow:var(--shadow-md)}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
-.nav-logo{font-weight:800;font-size:1.1rem;color:var(--steel-dark);display:flex;align-items:center;gap:8px}
-.nav-logo span{color:var(--accent)}
-.nav-links{display:flex;align-items:center;gap:28px}
-.nav-links a{font-size:.9rem;font-weight:500;color:var(--steel);transition:color .2s}
-.nav-links a:hover{color:var(--accent)}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:var(--radius-sm);font-weight:600;font-size:.95rem;transition:all .25s;cursor:pointer;border:none}
-.btn-primary{background:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(224,90,43,0.35)}
-.btn-primary:hover{background:var(--accent-dark);transform:translateY(-2px);box-shadow:0 6px 20px rgba(224,90,43,0.4)}
-.btn-outline{background:transparent;color:var(--accent);border:2px solid var(--accent)}
-.btn-outline:hover{background:var(--accent);color:#fff}
-.btn-sm{padding:10px 22px;font-size:.875rem}
-.btn-lg{padding:16px 36px;font-size:1.05rem}
-.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
-.burger span{width:24px;height:2px;background:var(--steel-dark);border-radius:2px;transition:.3s}
-
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 0;transition:all 0.4s ease}
+nav.scrolled{background:rgba(5,8,16,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--glass-border);padding:12px 0}
+nav .container{display:flex;justify-content:space-between;align-items:center}
+.nav-logo{font-size:1.5rem;font-weight:800;letter-spacing:-0.5px}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{color:var(--gray);text-decoration:none;font-size:0.875rem;font-weight:500;transition:color 0.3s}
+.nav-links a:hover{color:var(--cyan)}
+.nav-cta{background:linear-gradient(135deg,var(--cyan),var(--violet));padding:10px 24px;border-radius:50px;color:var(--white)!important;font-weight:600;font-size:0.875rem;text-decoration:none;transition:all 0.3s;box-shadow:0 4px 15px rgba(0,212,255,0.25)}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:var(--glow)}
 /* HERO */
-.hero{padding:140px 0 100px;background:linear-gradient(135deg,#ffffff 0%,#f8f9fa 50%,#f1f3f5 100%);position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;border-radius:50%;background:var(--accent-glow);filter:blur(80px)}
-.hero::after{content:'';position:absolute;bottom:-100px;left:-100px;width:400px;height:400px;border-radius:50%;background:rgba(74,85,104,0.05);filter:blur(60px)}
-.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--accent-glow);color:var(--accent-dark);padding:8px 16px;border-radius:50px;font-size:.8rem;font-weight:600;margin-bottom:20px;letter-spacing:.5px;text-transform:uppercase}
-.hero h1{font-size:2.8rem;font-weight:800;line-height:1.15;color:var(--steel-dark);margin-bottom:20px}
-.hero h1 em{font-style:normal;color:var(--accent);position:relative}
-.hero h1 em::after{content:'';position:absolute;bottom:2px;left:0;right:0;height:3px;background:var(--accent);border-radius:2px;opacity:.3}
-.hero p{font-size:1.15rem;color:var(--steel-light);margin-bottom:32px;max-width:520px}
-.hero-cta{display:flex;gap:16px;flex-wrap:wrap}
-.hero-visual{position:relative}
-.hero-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);padding:28px;border:1px solid var(--gray-200)}
-.hero-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
-.hero-card-title{font-weight:700;font-size:1rem;color:var(--steel-dark)}
-.hero-card-badge{background:#e8f5e9;color:#2e7d32;padding:4px 12px;border-radius:50px;font-size:.75rem;font-weight:600}
-.hero-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.hero-stat{background:var(--gray-50);border-radius:var(--radius-sm);padding:16px;text-align:center}
-.hero-stat-value{font-size:1.8rem;font-weight:800;color:var(--accent)}
-.hero-stat-label{font-size:.78rem;color:var(--steel-light);margin-top:4px}
-.hero-projects{margin-top:20px}
-.hero-project{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--gray-100)}
-.hero-project:last-child{border-bottom:none}
-.hero-project-name{font-weight:600;font-size:.88rem;color:var(--steel-dark)}
-.hero-project-status{font-size:.75rem;padding:4px 10px;border-radius:50px;font-weight:600}
-.status-green{background:#e8f5e9;color:#2e7d32}
-.status-blue{background:#e3f2fd;color:#1565c0}
-.status-orange{background:#fff3e0;color:#e65100}
-.float-badge{position:absolute;background:#fff;border-radius:var(--radius-sm);box-shadow:var(--shadow-md);padding:12px 16px;display:flex;align-items:center;gap:10px;font-size:.82rem;font-weight:600;border:1px solid var(--gray-100)}
-.float-badge.top-right{top:-16px;right:-16px;color:#2e7d32}
-.float-badge.bottom-left{bottom:-16px;left:-16px;color:var(--accent)}
-.float-badge-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
-
-/* TRUST BAR */
-.trust{padding:40px 0;background:var(--white);border-bottom:1px solid var(--gray-100)}
-.trust-inner{display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap}
-.trust-item{display:flex;align-items:center;gap:10px;color:var(--steel-light);font-size:.9rem;font-weight:500}
-.trust-item svg{width:20px;height:20px;color:var(--accent);flex-shrink:0}
-
-/* SECTIONS */
-section{padding:90px 0}
-.section-tag{display:inline-flex;align-items:center;gap:6px;color:var(--accent);font-weight:700;font-size:.8rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
-.section-title{font-size:2.2rem;font-weight:800;color:var(--steel-dark);margin-bottom:16px;line-height:1.2}
-.section-subtitle{font-size:1.1rem;color:var(--steel-light);max-width:600px;margin-bottom:48px}
-.text-center{text-align:center}
-.text-center .section-subtitle{margin-left:auto;margin-right:auto}
-
-/* PROBLEMS */
-.problems{background:var(--gray-50)}
-.problems-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-.problem-card{background:#fff;border-radius:var(--radius);padding:32px;border:1px solid var(--gray-200);transition:all .3s;position:relative;overflow:hidden}
-.problem-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent);opacity:0;transition:opacity .3s}
-.problem-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;position:relative}
+.hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(0,212,255,0.08) 0%,rgba(124,58,237,0.05) 40%,transparent 70%);pointer-events:none;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:blur(10px);padding:8px 20px;border-radius:50px;font-size:0.8rem;color:var(--cyan);font-weight:500;margin-bottom:32px;letter-spacing:0.5px;text-transform:uppercase}
+.hero-badge .dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.5)}}
+.hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;line-height:1.1;margin-bottom:24px;letter-spacing:-2px;max-width:900px;margin-left:auto;margin-right:auto}
+.hero p{font-size:clamp(1rem,2vw,1.25rem);color:var(--gray);max-width:650px;margin:0 auto 48px;line-height:1.8;font-weight:300}
+.hero-cta-group{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--cyan),var(--violet));padding:16px 36px;border-radius:60px;color:var(--white);font-weight:700;font-size:1rem;text-decoration:none;transition:all 0.4s;box-shadow:0 4px 25px rgba(0,212,255,0.3);border:none;cursor:pointer;position:relative;overflow:hidden}
+.btn-primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transition:left 0.5s}
+.btn-primary:hover::before{left:100%}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 40px rgba(0,212,255,0.4)}
+.btn-secondary{display:inline-flex;align-items:center;gap:10px;background:transparent;border:1px solid var(--glass-border);padding:16px 36px;border-radius:60px;color:var(--white);font-weight:600;font-size:1rem;text-decoration:none;transition:all 0.3s;backdrop-filter:blur(10px);cursor:pointer}
+.btn-secondary:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 20px rgba(0,212,255,0.15)}
+.hero-stats{display:flex;justify-content:center;gap:48px;margin-top:80px;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat .number{font-size:2rem;font-weight:800;font-family:'JetBrains Mono',monospace}
+.hero-stat .label{font-size:0.8rem;color:var(--gray2);margin-top:4px;text-transform:uppercase;letter-spacing:1px}
+/* SECTION COMMON */
+section{padding:120px 0;position:relative}
+.section-label{display:inline-flex;align-items:center;gap:8px;color:var(--cyan);font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px}
+.section-label .line{width:24px;height:1px;background:var(--cyan)}
+.section-title{font-size:clamp(2rem,4vw,3rem);font-weight:800;line-height:1.2;margin-bottom:20px;letter-spacing:-1px}
+.section-desc{color:var(--gray);font-size:1.1rem;max-width:600px;line-height:1.8;font-weight:300}
+/* PROBLEMS SECTION */
+.problems{background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 50%,var(--bg) 100%)}
+.problems-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:64px}
+.problem-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:20px;padding:36px 28px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:all 0.4s ease;position:relative;overflow:hidden}
+.problem-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--violet),transparent);opacity:0;transition:opacity 0.4s}
+.problem-card:hover{transform:translateY(-8px);border-color:rgba(0,212,255,0.2);box-shadow:0 20px 60px rgba(0,0,0,0.4)}
 .problem-card:hover::before{opacity:1}
-.problem-icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent-glow),rgba(224,90,43,0.08));display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:16px}
-.problem-card h3{font-size:1.1rem;font-weight:700;color:var(--steel-dark);margin-bottom:8px}
-.problem-card p{font-size:.92rem;color:var(--steel-light);line-height:1.6}
-
-/* SOLUTION */
-.solution{background:var(--white)}
-.solution-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
-.solution-steps{display:flex;flex-direction:column;gap:8px}
-.solution-step{display:flex;gap:16px;padding:20px;border-radius:var(--radius-sm);transition:all .3s;cursor:default}
-.solution-step:hover{background:var(--gray-50)}
-.solution-step-num{width:40px;height:40px;min-width:40px;border-radius:10px;background:var(--accent-glow);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem}
-.solution-step:hover .solution-step-num{background:var(--accent);color:#fff}
-.solution-step h4{font-size:1rem;font-weight:700;color:var(--steel-dark);margin-bottom:4px}
-.solution-step p{font-size:.88rem;color:var(--steel-light)}
-.solution-visual{background:linear-gradient(135deg,var(--steel-dark),var(--gray-800));border-radius:var(--radius);padding:32px;color:#fff;position:relative;overflow:hidden}
-.solution-visual::before{content:'';position:absolute;top:-50px;right:-50px;width:200px;height:200px;border-radius:50%;background:rgba(224,90,43,0.15);filter:blur(40px)}
-.solution-visual h3{font-size:1.2rem;font-weight:700;margin-bottom:24px;opacity:.9}
-.timeline{position:relative;padding-left:24px}
-.timeline::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:2px;background:rgba(255,255,255,0.15)}
-.timeline-item{position:relative;padding-bottom:24px;padding-left:24px}
-.timeline-item::before{content:'';position:absolute;left:-20px;top:4px;width:12px;height:12px;border-radius:50%;border:2px solid var(--accent-light);background:var(--steel-dark)}
-.timeline-item.active::before{background:var(--accent-light);box-shadow:0 0 12px rgba(224,90,43,0.5)}
-.timeline-item h5{font-size:.9rem;font-weight:700;margin-bottom:4px}
-.timeline-item p{font-size:.8rem;opacity:.7}
-
-/* MODULES */
-.modules{background:var(--gray-50)}
-.modules-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.module-card{background:#fff;border-radius:var(--radius);padding:32px;border:1px solid var(--gray-200);transition:all .3s;text-align:center;position:relative;overflow:hidden}
-.module-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-4px)}
-.module-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--accent);transform:scaleX(0);transition:transform .3s}
+.problem-icon{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,rgba(0,212,255,0.1),rgba(124,58,237,0.1));display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:1.5rem;border:1px solid rgba(0,212,255,0.15)}
+.problem-number{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--violet2);font-weight:700;margin-bottom:12px;letter-spacing:1px}
+.problem-card h3{font-size:1.15rem;font-weight:700;margin-bottom:12px;line-height:1.4}
+.problem-card p{color:var(--gray);font-size:0.9rem;line-height:1.7}
+.problem-impact{display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:6px 14px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);border-radius:50px;font-size:0.8rem;color:#f87171;font-weight:600}
+/* SOLUTION SECTION */
+.solution{position:relative}
+.solution::before{content:'';position:absolute;top:50%;right:0;width:500px;height:500px;background:radial-gradient(circle,rgba(124,58,237,0.08),transparent 70%);pointer-events:none;transform:translate(30%,-50%)}
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px;margin-top:64px}
+.module-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:20px;padding:36px 28px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:all 0.5s ease;position:relative;overflow:hidden}
+.module-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--violet));transform:scaleX(0);transition:transform 0.4s ease;transform-origin:left}
+.module-card:hover{transform:translateY(-6px);border-color:rgba(0,212,255,0.15)}
 .module-card:hover::after{transform:scaleX(1)}
-.module-icon{width:64px;height:64px;border-radius:16px;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;font-size:1.6rem}
-.module-icon.orange{background:linear-gradient(135deg,#fff3e0,#ffe0b2);color:#e65100}
-.module-icon.blue{background:linear-gradient(135deg,#e3f2fd,#bbdefb);color:#1565c0}
-.module-icon.green{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);color:#2e7d32}
-.module-icon.red{background:linear-gradient(135deg,#fce4ec,#f8bbd0);color:#c62828}
-.module-icon.purple{background:linear-gradient(135deg,#f3e5f5,#e1bee7);color:#6a1b9a}
-.module-card h3{font-size:1.05rem;font-weight:700;color:var(--steel-dark);margin-bottom:10px}
-.module-card p{font-size:.88rem;color:var(--steel-light);line-height:1.6}
-.module-features{margin-top:16px;text-align:left}
-.module-feature{display:flex;align-items:flex-start;gap:8px;font-size:.82rem;color:var(--steel);padding:4px 0}
-.module-feature svg{width:16px;height:16px;color:var(--accent);flex-shrink:0;margin-top:2px}
-
-/* ROI */
-.roi{background:linear-gradient(135deg,var(--steel-dark) 0%,var(--gray-900) 100%);color:#fff;position:relative;overflow:hidden}
-.roi::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;border-radius:50%;background:rgba(224,90,43,0.1);filter:blur(60px)}
-.roi .section-tag{color:var(--accent-light)}
-.roi .section-title{color:#fff}
-.roi .section-subtitle{color:rgba(255,255,255,0.7)}
-.roi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:48px}
-.roi-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius);padding:28px;text-align:center;transition:all .3s}
-.roi-card:hover{background:rgba(255,255,255,0.1);transform:translateY(-2px)}
-.roi-value{font-size:2.4rem;font-weight:800;color:var(--accent-light);margin-bottom:8px}
-.roi-label{font-size:.88rem;color:rgba(255,255,255,0.7);line-height:1.4}
-.roi-details{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:32px}
-.roi-detail h4{font-size:1rem;font-weight:700;margin-bottom:12px;color:var(--accent-light)}
-.roi-detail-item{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:.88rem;color:rgba(255,255,255,0.8)}
-.roi-detail-item svg{color:var(--accent-light);flex-shrink:0}
-
-/* CTA */
-.cta{padding:100px 0;background:var(--white);position:relative}
-.cta-card{background:linear-gradient(135deg,var(--gray-50),var(--white));border:2px solid var(--gray-200);border-radius:20px;padding:60px;text-align:center;position:relative;overflow:hidden;max-width:800px;margin:0 auto}
-.cta-card::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:4px;background:var(--accent);border-radius:0 0 4px 4px}
-.cta-card h2{font-size:2rem;font-weight:800;color:var(--steel-dark);margin-bottom:12px}
-.cta-card>p{font-size:1.05rem;color:var(--steel-light);margin-bottom:36px;max-width:560px;margin-left:auto;margin-right:auto}
-.cta-buttons{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:40px}
-.cta-contact{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;padding-top:32px;border-top:1px solid var(--gray-200)}
-.cta-contact-item{display:flex;align-items:center;gap:12px}
-.cta-contact-icon{width:44px;height:44px;border-radius:12px;background:var(--accent-glow);display:flex;align-items:center;justify-content:center}
-.cta-contact-icon svg{width:20px;height:20px;color:var(--accent)}
-.cta-contact-label{font-size:.78rem;color:var(--steel-light);margin-bottom:2px}
-.cta-contact-value{font-weight:700;font-size:.92rem;color:var(--steel-dark)}
-.cta-contact-value a{color:var(--accent);transition:color .2s}
-.cta-contact-value a:hover{color:var(--accent-dark)}
-
+.module-badge{display:inline-flex;padding:4px 12px;border-radius:50px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+.badge-blue{background:rgba(0,212,255,0.1);color:var(--cyan);border:1px solid rgba(0,212,255,0.2)}
+.badge-violet{background:rgba(124,58,237,0.1);color:var(--violet2);border:1px solid rgba(124,58,237,0.2)}
+.badge-green{background:rgba(16,185,129,0.1);color:#34d399;border:1px solid rgba(16,185,129,0.2)}
+.module-card h3{font-size:1.2rem;font-weight:700;margin-bottom:12px}
+.module-card p{color:var(--gray);font-size:0.9rem;line-height:1.7}
+.module-features{list-style:none;margin-top:16px}
+.module-features li{display:flex;align-items:flex-start;gap:10px;padding:6px 0;color:var(--gray);font-size:0.85rem}
+.module-features li::before{content:'\2713';color:var(--cyan);font-weight:700;flex-shrink:0;margin-top:2px}
+/* STATS SECTION */
+.stats{background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 50%,var(--bg) 100%);text-align:center}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:32px;margin-top:64px}
+.stat-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:24px;padding:48px 32px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:all 0.4s;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(0,212,255,0.05),transparent,rgba(124,58,237,0.05),transparent);animation:rotateBg 10s linear infinite;pointer-events:none}
+@keyframes rotateBg{to{transform:rotate(360deg)}}
+.stat-card:hover{transform:scale(1.03);border-color:rgba(0,212,255,0.2)}
+.stat-number{font-size:3.5rem;font-weight:900;font-family:'JetBrains Mono',monospace;line-height:1;margin-bottom:12px}
+.stat-label{font-size:1rem;font-weight:600;margin-bottom:8px}
+.stat-desc{color:var(--gray);font-size:0.85rem;line-height:1.6}
+/* ROI SECTION */
+.roi{text-align:center}
+.roi-card{max-width:800px;margin:48px auto 0;background:linear-gradient(135deg,rgba(0,212,255,0.05),rgba(124,58,237,0.05));border:1px solid var(--glass-border);border-radius:28px;padding:60px 48px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:relative;overflow:hidden}
+.roi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--cyan));background-size:200% 100%;animation:shimmer 3s linear infinite}
+@keyframes shimmer{to{background-position:200% 0}}
+.roi-big-number{font-size:clamp(4rem,8vw,6rem);font-weight:900;font-family:'JetBrains Mono',monospace;line-height:1;margin-bottom:16px}
+.roi-subtitle{font-size:1.3rem;font-weight:600;margin-bottom:12px}
+.roi-detail{color:var(--gray);font-size:1rem;line-height:1.8;max-width:550px;margin:0 auto}
+.roi-breakdown{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px;margin-top:40px;padding-top:40px;border-top:1px solid var(--glass-border)}
+.roi-item .roi-item-val{font-size:1.5rem;font-weight:800;font-family:'JetBrains Mono',monospace}
+.roi-item .roi-item-label{color:var(--gray);font-size:0.8rem;margin-top:4px}
+/* CTA SECTION */
+.cta-section{text-align:center;padding:120px 0 100px;position:relative}
+.cta-section::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1000px;height:600px;background:radial-gradient(ellipse,rgba(0,212,255,0.06) 0%,rgba(124,58,237,0.04) 40%,transparent 70%);pointer-events:none}
+.cta-box{max-width:700px;margin:0 auto}
+.cta-box h2{font-size:clamp(2rem,4vw,3rem);font-weight:800;line-height:1.2;margin-bottom:20px;letter-spacing:-1px}
+.cta-box p{color:var(--gray);font-size:1.1rem;margin-bottom:40px;line-height:1.8}
+.contact-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-top:48px}
+.contact-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:16px;padding:28px 24px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:all 0.3s;text-align:center}
+.contact-card:hover{border-color:rgba(0,212,255,0.3);transform:translateY(-4px)}
+.contact-card .icon{font-size:1.5rem;margin-bottom:12px}
+.contact-card .label{font-size:0.75rem;color:var(--gray2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.contact-card a,.contact-card .value{color:var(--white);text-decoration:none;font-weight:600;font-size:1rem;transition:color 0.3s}
+.contact-card a:hover{color:var(--cyan)}
 /* FOOTER */
-footer{padding:32px 0;background:var(--gray-900);color:rgba(255,255,255,0.5);font-size:.82rem;text-align:center}
-footer a{color:var(--accent-light)}
-
+footer{border-top:1px solid var(--glass-border);padding:40px 0;text-align:center}
+footer p{color:var(--gray2);font-size:0.8rem}
 /* ANIMATIONS */
-.fade-in{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
-.fade-in.visible{opacity:1;transform:translateY(0)}
-
-/* RESPONSIVE */
-@media(max-width:968px){
-.nav-links{display:none;position:absolute;top:64px;left:0;right:0;background:#fff;flex-direction:column;padding:24px;border-bottom:1px solid var(--gray-200);gap:16px;box-shadow:var(--shadow-md)}
+.reveal{opacity:0;transform:translateY(40px);transition:all 0.8s cubic-bezier(0.16,1,0.3,1)}
+.reveal.active{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:all 0.8s cubic-bezier(0.16,1,0.3,1)}
+.reveal-left.active{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(0.9);transition:all 0.8s cubic-bezier(0.16,1,0.3,1)}
+.reveal-scale.active{opacity:1;transform:scale(1)}
+/* MOBILE NAV */
+.menu-toggle{display:none;background:none;border:none;color:var(--white);font-size:1.5rem;cursor:pointer;padding:8px}
+@media(max-width:768px){
+.nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(5,8,16,0.97);backdrop-filter:blur(20px);flex-direction:column;padding:24px;gap:16px;border-bottom:1px solid var(--glass-border)}
 .nav-links.open{display:flex}
-.burger{display:flex}
-.hero-grid,.solution-grid,.roi-details{grid-template-columns:1fr}
-.hero{padding:120px 0 60px}
-.hero h1{font-size:2.2rem}
-.hero-visual{order:-1}
-.modules-grid{grid-template-columns:1fr 1fr}
-.roi-grid{grid-template-columns:1fr 1fr}
-.problems-grid{grid-template-columns:1fr}
-}
-@media(max-width:640px){
-.hero h1{font-size:1.8rem}
-.section-title{font-size:1.7rem}
+.menu-toggle{display:block}
+.hero-stats{gap:24px}
+.hero h1{letter-spacing:-1px}
+.problems-grid,.modules-grid{grid-template-columns:1fr}
 .modules-grid{grid-template-columns:1fr}
-.roi-grid{grid-template-columns:1fr 1fr}
-.hero-stat-grid{grid-template-columns:1fr 1fr}
-.cta-card{padding:40px 24px}
-.cta-contact{flex-direction:column;align-items:center;gap:24px}
+.contact-cards{grid-template-columns:1fr}
+.roi-breakdown{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
+<canvas id="particles"></canvas>
 
 <!-- NAV -->
-<nav class="nav" id="nav">
-<div class="container nav-inner">
-<div class="nav-logo">
-<svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="6" fill="#e05a2b"/><path d="M7 9h6v3H7zm0 4.5h10v3H7zm0 4.5h8v3H7z" fill="#fff"/></svg>
-<span>BE</span> Pilot
-</div>
-<div class="nav-links" id="navLinks">
-<a href="#problemes">Vos enjeux</a>
+<nav id="navbar">
+<div class="container">
+<div class="nav-logo"><span class="gradient-text">BE Pilot</span></div>
+<button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+<div class="nav-links">
+<a href="#problemes">Diagnostic</a>
 <a href="#solution">Solution</a>
-<a href="#modules">Modules</a>
+<a href="#resultats">R\u00e9sultats</a>
 <a href="#roi">ROI</a>
-<a href="#contact" class="btn btn-primary btn-sm">Demander une d&eacute;mo</a>
+<a href="#contact" class="nav-cta">Demander une d\u00e9mo</a>
 </div>
-<button class="burger" id="burger" aria-label="Menu">
-<span></span><span></span><span></span>
-</button>
 </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="hero">
 <div class="container">
-<div class="hero-grid">
-<div class="fade-in">
-<div class="hero-badge">
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-Pr&eacute;par&eacute; pour Ragueneau Cuisines Pro
-</div>
-<h1>Ragueneau, <em>pilotez vos installations cuisine</em> comme vos grands chefs</h1>
-<p>3 g&eacute;n&eacute;rations d'excellence m&eacute;ritent un outil &agrave; la hauteur. BE Pilot centralise vos projets d'installation, votre planning techniciens et votre SAV en une seule plateforme.</p>
-<div class="hero-cta">
-<a href="#contact" class="btn btn-primary btn-lg">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-D&eacute;mo gratuite 30 min
+<div class="hero-badge"><span class="dot"></span> Solution m\u00e9tier cuisine professionnelle</div>
+<h1>Pilotez chaque projet<br><span class="gradient-text">du devis au SAV</span><br>sans rien perdre en route</h1>
+<p>Cr\u00e8ches, EHPAD, cantines, cuisines centrales\u2009\u2014\u2009une seule plateforme pour coordonner vos \u00e9quipes Commercial, Montage et SAV sur chaque chantier de cuisine collective.</p>
+<div class="hero-cta-group">
+<a href="#contact" class="btn-primary">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+D\u00e9couvrir BE Pilot
 </a>
-<a href="#solution" class="btn btn-outline btn-lg">D&eacute;couvrir la solution</a>
+<a href="#problemes" class="btn-secondary">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+Voir le diagnostic
+</a>
 </div>
-</div>
-<div class="hero-visual fade-in">
-<div class="hero-card">
-<div class="hero-card-header">
-<span class="hero-card-title">Tableau de bord Ragueneau</span>
-<span class="hero-card-badge">&bull; En temps r&eacute;el</span>
-</div>
-<div class="hero-stat-grid">
-<div class="hero-stat">
-<div class="hero-stat-value">12</div>
-<div class="hero-stat-label">Projets en cours</div>
-</div>
-<div class="hero-stat">
-<div class="hero-stat-value">97%</div>
-<div class="hero-stat-label">Taux de livraison</div>
-</div>
-<div class="hero-stat">
-<div class="hero-stat-value">8</div>
-<div class="hero-stat-label">Techniciens actifs</div>
-</div>
-<div class="hero-stat">
-<div class="hero-stat-value">3j</div>
-<div class="hero-stat-label">D&eacute;lai SAV moyen</div>
-</div>
-</div>
-<div class="hero-projects">
-<div class="hero-project">
-<span class="hero-project-name">Restaurant Le Gourmet &mdash; Cuisine compl&egrave;te</span>
-<span class="hero-project-status status-green">Installation</span>
-</div>
-<div class="hero-project">
-<span class="hero-project-name">H&ocirc;tel Bellevue &mdash; R&eacute;novation</span>
-<span class="hero-project-status status-blue">Devis valid&eacute;</span>
-</div>
-<div class="hero-project">
-<span class="hero-project-name">Brasserie du Port &mdash; SAV hotte</span>
-<span class="hero-project-status status-orange">Intervention</span>
-</div>
-</div>
-</div>
-<div class="float-badge top-right">
-<div class="float-badge-icon" style="background:#e8f5e9">&#9989;</div>
-Planning synchronis&eacute;
-</div>
-<div class="float-badge bottom-left">
-<div class="float-badge-icon" style="background:var(--accent-glow)">&#128200;</div>
-Rentabilit&eacute; +35%
-</div>
-</div>
+<div class="hero-stats">
+<div class="hero-stat reveal"><div class="number gradient-text" data-target="45" data-suffix="%">0%</div><div class="label">Temps admin \u00e9conomis\u00e9</div></div>
+<div class="hero-stat reveal"><div class="number gradient-text" data-target="3" data-suffix="x">0x</div><div class="label">Moins d\u2019erreurs planning</div></div>
+<div class="hero-stat reveal"><div class="number gradient-text" data-target="100" data-suffix="%">0%</div><div class="label">Tra\u00e7abilit\u00e9 r\u00e9glementaire</div></div>
 </div>
 </div>
 </section>
 
-<!-- TRUST -->
-<div class="trust">
-<div class="container">
-<div class="trust-inner">
-<div class="trust-item">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-Donn&eacute;es s&eacute;curis&eacute;es en France
-</div>
-<div class="trust-item">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-D&eacute;ploiement en 2 semaines
-</div>
-<div class="trust-item">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-Adapt&eacute; aux PME du b&acirc;timent
-</div>
-<div class="trust-item">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-Support d&eacute;di&eacute; inclus
-</div>
-</div>
-</div>
-</div>
-
 <!-- PROBLEMS -->
 <section class="problems" id="problemes">
 <div class="container">
-<div class="text-center">
-<div class="section-tag fade-in">
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-Vos d&eacute;fis au quotidien
-</div>
-<h2 class="section-title fade-in">Caroline, Adrien, ces probl&egrave;mes<br>vous parlent&nbsp;?</h2>
-<p class="section-subtitle fade-in">Comme beaucoup de PME sp&eacute;cialis&eacute;es en cuisine professionnelle, vous g&eacute;rez des projets complexes avec des outils qui ne suivent plus.</p>
-</div>
+<div class="section-label reveal"><span class="line"></span> Diagnostic terrain</div>
+<h2 class="section-title reveal">Les 4 probl\u00e8mes qui freinent<br><span class="gradient-text">votre croissance</span></h2>
+<p class="section-desc reveal">Apr\u00e8s des d\u00e9cennies d\u2019expertise, votre savoir-faire est in\u00e9gal\u00e9. Mais vos outils de gestion n\u2019ont pas suivi.</p>
 <div class="problems-grid">
-<div class="problem-card fade-in">
-<div class="problem-icon">&#128196;</div>
-<h3>Devis et chantiers pilot&eacute;s sur Excel</h3>
-<p>Vos devis d'installation cuisine vivent dans des fichiers Excel dispers&eacute;s. Chaque modification implique de chercher la bonne version, avec le risque d'erreurs et de pertes d'informations critiques.</p>
+
+<div class="problem-card reveal" style="transition-delay:0.1s">
+<div class="problem-icon">\ud83d\udd17</div>
+<div class="problem-number">PROBL\u00c8ME 01</div>
+<h3>Coordination fragment\u00e9e entre \u00e9quipes</h3>
+<p>Le Commercial vend, le Montage ex\u00e9cute, le SAV intervient\u2009\u2014\u2009mais l\u2019information se perd entre chaque maillon. Emails, appels, post-it\u2009: rien n\u2019est centralis\u00e9.</p>
+<div class="problem-impact">\u26a0 Jusqu\u2019\u00e0 30% du temps perdu en ressaisie</div>
 </div>
-<div class="problem-card fade-in">
-<div class="problem-icon">&#128270;</div>
-<h3>Suivi SAV dispers&eacute; et opaque</h3>
-<p>Les demandes de maintenance arrivent par t&eacute;l&eacute;phone, email, SMS. Impossible de savoir o&ugrave; en est chaque intervention, quel technicien est assign&eacute;, et si le client a &eacute;t&eacute; recontact&eacute;.</p>
+
+<div class="problem-card reveal" style="transition-delay:0.2s">
+<div class="problem-icon">\ud83d\udcc5</div>
+<div class="problem-number">PROBL\u00c8ME 02</div>
+<h3>Planning terrain non optimis\u00e9</h3>
+<p>Affecter les bons techniciens aux bons chantiers, g\u00e9rer les impr\u00e9vus, \u00e9viter les trajets inutiles\u2009: votre planning est un casse-t\u00eate quotidien sans outil adapt\u00e9.</p>
+<div class="problem-impact">\u26a0 3x plus d\u2019erreurs de planification</div>
 </div>
-<div class="problem-card fade-in">
-<div class="problem-icon">&#128197;</div>
-<h3>Planning techniciens difficile &agrave; coordonner</h3>
-<p>Entre les installations en cours, les mises en service et les urgences SAV, coordonner vos &eacute;quipes terrain rel&egrave;ve du casse-t&ecirc;te. Les doubles r&eacute;servations et oublis co&ucirc;tent cher.</p>
+
+<div class="problem-card reveal" style="transition-delay:0.3s">
+<div class="problem-icon">\ud83d\udcdc</div>
+<div class="problem-number">PROBL\u00c8ME 03</div>
+<h3>Suivi maintenance manuelle</h3>
+<p>Contrats r\u00e9glementaires, \u00e9ch\u00e9ances de maintenance, visites p\u00e9riodiques\u2009: tout est suivi dans des tableurs dispers\u00e9s. Un oubli et c\u2019est la non-conformit\u00e9.</p>
+<div class="problem-impact">\u26a0 Risque de non-conformit\u00e9 r\u00e9glementaire</div>
 </div>
-<div class="problem-card fade-in">
-<div class="problem-icon">&#128065;</div>
-<h3>Aucune vision consolid&eacute;e des projets</h3>
-<p>Combien de projets en cours ? Lesquels sont en retard ? Quelle est la charge de vos &eacute;quipes cette semaine ? Sans tableau de bord, piloter l'activit&eacute; se fait &agrave; l'aveugle.</p>
+
+<div class="problem-card reveal" style="transition-delay:0.4s">
+<div class="problem-icon">\u2744\ufe0f</div>
+<div class="problem-number">PROBL\u00c8ME 04</div>
+<h3>Tra\u00e7abilit\u00e9 CERFA et fluides \u00e9parpill\u00e9e</h3>
+<p>Fiches CERFA, suivi des fluides frigorig\u00e8nes, attestations\u2009: les documents r\u00e9glementaires sont dispers\u00e9s entre techniciens, bureaux et v\u00e9hicules.</p>
+<div class="problem-impact">\u26a0 Documents introuvables lors des contr\u00f4les</div>
 </div>
+
 </div>
 </div>
 </section>
@@ -358,145 +239,95 @@ Vos d&eacute;fis au quotidien
 <!-- SOLUTION -->
 <section class="solution" id="solution">
 <div class="container">
-<div class="solution-grid">
-<div>
-<div class="section-tag fade-in">
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-La solution BE Pilot
+<div class="section-label reveal"><span class="line"></span> La solution adapt\u00e9e \u00e0 votre m\u00e9tier</div>
+<h2 class="section-title reveal">5 modules con\u00e7us pour<br><span class="gradient-text">la cuisine professionnelle</span></h2>
+<p class="section-desc reveal">Chaque module r\u00e9pond \u00e0 un besoin terrain r\u00e9el, valid\u00e9 avec des installateurs comme vous.</p>
+<div class="modules-grid">
+
+<div class="module-card reveal" style="transition-delay:0.1s">
+<span class="module-badge badge-blue">Commercial</span>
+<h3>Gestion de projets & devis</h3>
+<p>Centralisez chaque projet cuisine collective du premier contact \u00e0 la livraison finale.</p>
+<ul class="module-features">
+<li>Fiche projet unifi\u00e9e (cr\u00e8che, EHPAD, cantine\u2026)</li>
+<li>Devis et relances automatis\u00e9s</li>
+<li>Historique client complet et accessible</li>
+</ul>
 </div>
-<h2 class="section-title fade-in">Chaque installation cuisine,<br>pilot&eacute;e de A &agrave; Z</h2>
-<p class="section-subtitle fade-in">BE Pilot suit le cycle complet de vos projets d'installation cuisine professionnelle, exactement comme vous travaillez.</p>
-<div class="solution-steps fade-in">
-<div class="solution-step">
-<div class="solution-step-num">1</div>
-<div>
-<h4>&Eacute;tude &amp; Conception</h4>
-<p>Centralisez les besoins client, plans et sp&eacute;cifications techniques dans un espace projet d&eacute;di&eacute;.</p>
+
+<div class="module-card reveal" style="transition-delay:0.2s">
+<span class="module-badge badge-violet">Montage</span>
+<h3>Planning & affectation terrain</h3>
+<p>Optimisez les tourn\u00e9es de vos \u00e9quipes de montage avec un planning visuel intelligent.</p>
+<ul class="module-features">
+<li>Vue calendrier par technicien et par zone</li>
+<li>Affectation par comp\u00e9tence et disponibilit\u00e9</li>
+<li>Notifications temps r\u00e9el sur mobile</li>
+</ul>
 </div>
+
+<div class="module-card reveal" style="transition-delay:0.3s">
+<span class="module-badge badge-green">SAV</span>
+<h3>Interventions & maintenance</h3>
+<p>Passez du r\u00e9actif au pr\u00e9ventif\u2009: chaque \u00e9quipement est suivi, chaque \u00e9ch\u00e9ance anticip\u00e9e.</p>
+<ul class="module-features">
+<li>Contrats de maintenance avec alertes auto</li>
+<li>Historique d\u2019interventions par \u00e9quipement</li>
+<li>Rapports d\u2019intervention d\u00e9mat\u00e9rialis\u00e9s</li>
+</ul>
 </div>
-<div class="solution-step">
-<div class="solution-step-num">2</div>
-<div>
-<h4>Devis &amp; Validation</h4>
-<p>G&eacute;n&eacute;rez des devis professionnels, suivez les relances et transformez en commande d'un clic.</p>
+
+<div class="module-card reveal" style="transition-delay:0.4s">
+<span class="module-badge badge-blue">R\u00e9glementaire</span>
+<h3>Tra\u00e7abilit\u00e9 CERFA & fluides</h3>
+<p>Conformit\u00e9 totale\u2009: chaque manipulation de fluide frigorig\u00e8ne est trac\u00e9e et archiv\u00e9e.</p>
+<ul class="module-features">
+<li>G\u00e9n\u00e9ration automatique des fiches CERFA</li>
+<li>Registre num\u00e9rique des fluides frigorig\u00e8nes</li>
+<li>Archivage conforme pr\u00eat pour contr\u00f4le</li>
+</ul>
 </div>
+
+<div class="module-card reveal" style="transition-delay:0.5s">
+<span class="module-badge badge-violet">Pilotage</span>
+<h3>Tableau de bord dirigeant</h3>
+<p>Vision 360\u00b0 de votre activit\u00e9\u2009: chiffre d\u2019affaires, charge \u00e9quipes, conformit\u00e9 en un coup d\u2019\u0153il.</p>
+<ul class="module-features">
+<li>KPIs temps r\u00e9el par \u00e9quipe et par p\u00e9riode</li>
+<li>Suivi de rentabilit\u00e9 par projet</li>
+<li>Alertes proactives sur les d\u00e9rives</li>
+</ul>
 </div>
-<div class="solution-step">
-<div class="solution-step-num">3</div>
-<div>
-<h4>Installation &amp; Chantier</h4>
-<p>Planifiez vos &eacute;quipes, suivez l'avancement jour par jour avec le journal de chantier terrain.</p>
-</div>
-</div>
-<div class="solution-step">
-<div class="solution-step-num">4</div>
-<div>
-<h4>Mise en service</h4>
-<p>Validez chaque &eacute;quipement, g&eacute;n&eacute;rez les PV de r&eacute;ception et lancez les garanties automatiquement.</p>
-</div>
-</div>
-<div class="solution-step">
-<div class="solution-step-num">5</div>
-<div>
-<h4>SAV &amp; Maintenance</h4>
-<p>G&eacute;rez les contrats de maintenance, d&eacute;clenchez les interventions et historisez chaque action.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="fade-in">
-<div class="solution-visual">
-<h3>Projet en cours &mdash; Le Gourmet</h3>
-<div class="timeline">
-<div class="timeline-item">
-<h5>&Eacute;tude technique</h5>
-<p>Termin&eacute;e le 15/01 &mdash; Plans valid&eacute;s</p>
-</div>
-<div class="timeline-item">
-<h5>Devis 47 800 &euro; HT</h5>
-<p>Accept&eacute; le 22/01</p>
-</div>
-<div class="timeline-item active">
-<h5>Installation en cours</h5>
-<p>D&eacute;but 03/02 &mdash; 3 techniciens assign&eacute;s</p>
-</div>
-<div class="timeline-item">
-<h5>Mise en service</h5>
-<p>Pr&eacute;vue le 28/02</p>
-</div>
-<div class="timeline-item">
-<h5>Contrat SAV Premium</h5>
-<p>&Agrave; activer apr&egrave;s r&eacute;ception</p>
-</div>
-</div>
-</div>
-</div>
+
 </div>
 </div>
 </section>
-
-<!-- MODULES -->
-<section class="modules" id="modules">
+<!-- STATS -->
+<section class="stats" id="resultats">
 <div class="container">
-<div class="text-center">
-<div class="section-tag fade-in">
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-Modules cl&eacute;s
+<div class="section-label reveal"><span class="line"></span> RÃ©sultats mesurÃ©s</div>
+<h2 class="section-title reveal">Des rÃ©sultats concrets,<br><span class="gradient-text">dÃ¨s les premiÃ¨res semaines</span></h2>
+<p class="section-desc reveal" style="margin:0 auto 0">Chiffres moyens observÃ©s chez les installateurs utilisant BE Pilot.</p>
+<div class="stats-grid">
+
+<div class="stat-card reveal-scale" style="transition-delay:0.1s">
+<div class="stat-number gradient-text"><span class="counter" data-target="45">0</span>%</div>
+<div class="stat-label">Temps administratif Ã©conomisÃ©</div>
+<div class="stat-desc">Fini les doubles saisies, les fichiers Excel Ã©parpillÃ©s et les relances manuelles. Tout est automatisÃ©.</div>
 </div>
-<h2 class="section-title fade-in">Tout ce dont Ragueneau<br>a besoin, rien de superflu</h2>
-<p class="section-subtitle fade-in">Chaque module a &eacute;t&eacute; pens&eacute; pour le m&eacute;tier de la cuisine professionnelle. Activez uniquement ce qui vous est utile.</p>
+
+<div class="stat-card reveal-scale" style="transition-delay:0.2s">
+<div class="stat-number gradient-text"><span class="counter" data-target="3">0</span>x</div>
+<div class="stat-label">Moins dâerreurs de planning</div>
+<div class="stat-desc">Planning intelligent avec vue par compÃ©tence, zone et disponibilitÃ©. Les oublis et chevauchements disparaissent.</div>
 </div>
-<div class="modules-grid">
-<div class="module-card fade-in">
-<div class="module-icon orange">&#128204;</div>
-<h3>Gestion des projets d'installation</h3>
-<p>Vision 360&deg; de chaque projet, du premier contact client &agrave; la livraison finale.</p>
-<div class="module-features">
-<div class="module-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Fiches projets personnalis&eacute;es</div>
-<div class="module-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Jalons et &eacute;ch&eacute;ances automatiques</div>
-<div class="module-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Documents centralis&eacute;s</div>
+
+<div class="stat-card reveal-scale" style="transition-delay:0.3s">
+<div class="stat-number gradient-text"><span class="counter" data-target="100">0</span>%</div>
+<div class="stat-label">TraÃ§abilitÃ© rÃ©glementaire</div>
+<div class="stat-desc">CERFA, fluides frigorigÃ¨nes, attestations : tout est gÃ©nÃ©rÃ©, archivÃ© et prÃªt pour les contrÃ´les.</div>
 </div>
-</div>
-<div class="module-card fade-in">
-<div class="module-icon blue">&#128197;</div>
-<h3>Planning techniciens</h3>
-<p>Affectez vos &eacute;quipes en un coup d'&#339;il. Fini les conflits de planning.</p>
-<div class="module-features">
-<div class="module-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Vue calendrier drag &amp; drop</div>
-<div class="module-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Alertes conflits &amp; surcharge</div>
-<div class="module-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>G&eacute;olocalisation terrain</div>
-</div>
-</div>
-<div class="module-card fade-in">
-<div class="module-icon green">&#128295;</div>
-<h3>Suivi SAV &amp; Maintenance</h3>
-<p>Chaque demande client trac&eacute;e, chaque intervention historis&eacute;e.</p>
-<div class="module-features">
-<div class="module-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Tickets SAV avec SLA</div>
-<div class="module-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Contrats de maintenance</div>
-<div class="module-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Rappels automatiques</div>
-</div>
-</div>
-<div class="module-card fade-in">
-<div class="module-icon red">&#128176;</div>
-<h3>Devis &amp; Facturation</h3>
-<p>Du chiffrage &agrave; l'encaissement, un flux fluide et sans ressaisie.</p>
-<div class="module-features">
-<div class="module-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Mod&egrave;les de devis m&eacute;tier</div>
-<div class="module-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Transformation devis &rarr; facture</div>
-<div class="module-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Suivi paiements &amp; relances</div>
-</div>
-</div>
-<div class="module-card fade-in">
-<div class="module-icon purple">&#128221;</div>
-<h3>Journal de chantier terrain</h3>
-<p>Vos techniciens documentent l'avancement directement depuis le terrain.</p>
-<div class="module-features">
-<div class="module-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Saisie mobile photos + notes</div>
-<div class="module-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Rapports automatiques</div>
-<div class="module-feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Signature client sur place</div>
-</div>
-</div>
+
 </div>
 </div>
 </section>
@@ -504,110 +335,47 @@ Modules cl&eacute;s
 <!-- ROI -->
 <section class="roi" id="roi">
 <div class="container">
-<div class="text-center">
-<div class="section-tag fade-in">
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-Retour sur investissement
-</div>
-<h2 class="section-title fade-in">L'impact concret pour<br>une PME comme Ragueneau</h2>
-<p class="section-subtitle fade-in">Estim&eacute; sur la base d'une entreprise de 8-15 collaborateurs g&eacute;rant 80-120 projets/an.</p>
-</div>
-<div class="roi-grid fade-in">
-<div class="roi-card">
-<div class="roi-value">-40%</div>
-<div class="roi-label">de temps administratif sur les devis et la facturation</div>
-</div>
-<div class="roi-card">
-<div class="roi-value">+25%</div>
-<div class="roi-label">de projets livr&eacute;s dans les d&eacute;lais gr&acirc;ce au planning centralis&eacute;</div>
-</div>
-<div class="roi-card">
-<div class="roi-value">-60%</div>
-<div class="roi-label">de temps perdu en coordination &eacute;quipe et recherche d'info</div>
-</div>
-<div class="roi-card">
-<div class="roi-value">2x</div>
-<div class="roi-label">plus rapide sur le traitement des demandes SAV</div>
-</div>
-</div>
-<div class="roi-details fade-in">
-<div class="roi-detail">
-<h4>Gains de temps estim&eacute;s</h4>
-<div class="roi-detail-item">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-15h/semaine &eacute;conomis&eacute;es sur l'administratif
-</div>
-<div class="roi-detail-item">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-8h/semaine en moins sur la coordination terrain
-</div>
-<div class="roi-detail-item">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-D&eacute;lais SAV r&eacute;duits de 5 jours &agrave; 2 jours en moyenne
-</div>
-</div>
-<div class="roi-detail">
-<h4>Impact financier annuel</h4>
-<div class="roi-detail-item">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-+35 000 &euro; de CA r&eacute;cup&eacute;r&eacute; (projets non perdus)
-</div>
-<div class="roi-detail-item">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
--12 000 &euro; de co&ucirc;ts li&eacute;s aux erreurs et retards
-</div>
-<div class="roi-detail-item">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-ROI positif d&egrave;s le 3&egrave;me mois d'utilisation
-</div>
+<div class="section-label reveal"><span class="line"></span> Retour sur investissement</div>
+<h2 class="section-title reveal">Un ROI mesurable<br><span class="gradient-text">dÃ¨s le premier trimestre</span></h2>
+<div class="roi-card reveal-scale">
+<div class="roi-big-number gradient-text"><span class="counter" data-target="47">0</span>Kâ¬</div>
+<div class="roi-subtitle">Ãconomie annuelle estimÃ©e</div>
+<div class="roi-detail">Pour une PME de 20 collaborateurs avec 3 Ã©quipes terrain, BE Pilot gÃ©nÃ¨re en moyenne 47â¯000â¬ dâÃ©conomies par an en rÃ©duisant le temps administratif, les erreurs de planning et les pÃ©nalitÃ©s de non-conformitÃ©.</div>
+<div class="roi-breakdown">
+<div class="roi-item"><div class="roi-item-val gradient-text"><span class="counter" data-target="22">0</span>Kâ¬</div><div class="roi-item-label">Temps admin rÃ©cupÃ©rÃ©</div></div>
+<div class="roi-item"><div class="roi-item-val gradient-text"><span class="counter" data-target="15">0</span>Kâ¬</div><div class="roi-item-label">Erreurs Ã©vitÃ©es</div></div>
+<div class="roi-item"><div class="roi-item-val gradient-text"><span class="counter" data-target="10">0</span>Kâ¬</div><div class="roi-item-label">ConformitÃ© assurÃ©e</div></div>
 </div>
 </div>
 </div>
 </section>
 
 <!-- CTA -->
-<section class="cta" id="contact">
+<section class="cta-section" id="contact">
 <div class="container">
-<div class="cta-card fade-in">
-<h2>Pr&ecirc;ts &agrave; piloter Ragueneau Cuisines Pro<br>avec un outil &agrave; votre mesure&nbsp;?</h2>
-<p>R&eacute;servez 30 minutes avec Quentin pour d&eacute;couvrir BE Pilot adapt&eacute; &agrave; votre m&eacute;tier. D&eacute;mo personnalis&eacute;e, sans engagement.</p>
-<div class="cta-buttons">
-<a href="mailto:notitiacorp@gmail.com?subject=D%C3%A9mo%20BE%20Pilot%20%E2%80%93%20Ragueneau%20Cuisines%20Pro&body=Bonjour%20Quentin%2C%0A%0ANous%20souhaitons%20planifier%20une%20d%C3%A9mo%20de%20BE%20Pilot%20pour%20Ragueneau%20Cuisines%20Pro.%0A%0ACordialement" class="btn btn-primary btn-lg">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-R&eacute;server ma d&eacute;mo gratuite
+<div class="cta-box">
+<div class="section-label reveal"><span class="line"></span> Passez Ã  lâaction</div>
+<h2 class="reveal">PrÃªt Ã  transformer<br><span class="gradient-text">votre gestion de projetsâ?</span></h2>
+<p class="reveal">DÃ©couvrez comment BE Pilot sâadapte Ã  votre organisation lors dâune dÃ©monstration personnalisÃ©e de 30 minutes.</p>
+<a href="mailto:notitiacorp@gmail.com?subject=Demande%20de%20d%C3%A9mo%20BE%20Pilot%20-%20Cuisine%20Pro" class="btn-primary reveal" style="font-size:1.1rem;padding:18px 42px">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><polyline points="22,3 12,13 2,3"/></svg>
+Demander une dÃ©mo gratuite
 </a>
-<a href="tel:+33671902513" class="btn btn-outline btn-lg">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-Appeler Quentin
-</a>
+<div class="contact-cards reveal">
+<div class="contact-card">
+<div class="icon">ð¤</div>
+<div class="label">Votre interlocuteur</div>
+<div class="value">Quentin CONVERT</div>
 </div>
-<div class="cta-contact">
-<div class="cta-contact-item">
-<div class="cta-contact-icon">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+<div class="contact-card">
+<div class="icon">âï¸</div>
+<div class="label">Email</div>
+<a href="mailto:notitiacorp@gmail.com">notitiacorp@gmail.com</a>
 </div>
-<div>
-<div class="cta-contact-label">Votre interlocuteur</div>
-<div class="cta-contact-value">Quentin CONVERT</div>
-</div>
-</div>
-<div class="cta-contact-item">
-<div class="cta-contact-icon">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-</div>
-<div>
-<div class="cta-contact-label">Email</div>
-<div class="cta-contact-value"><a href="mailto:notitiacorp@gmail.com">notitiacorp@gmail.com</a></div>
-</div>
-</div>
-<div class="cta-contact-item">
-<div class="cta-contact-icon">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-</div>
-<div>
-<div class="cta-contact-label">T&eacute;l&eacute;phone</div>
-<div class="cta-contact-value"><a href="tel:+33671902513">06 71 90 25 13</a></div>
-</div>
+<div class="contact-card">
+<div class="icon">ð±</div>
+<div class="label">TÃ©lÃ©phone</div>
+<a href="tel:+33671902513">06 71 90 25 13</a>
 </div>
 </div>
 </div>
@@ -617,40 +385,155 @@ Appeler Quentin
 <!-- FOOTER -->
 <footer>
 <div class="container">
-<p>Page pr&eacute;par&eacute;e sp&eacute;cialement pour <strong style="color:#fff">Ragueneau Cuisines Pro</strong> par l'&eacute;quipe BE Pilot &mdash; &copy; 2025 Notitia Corp</p>
+<p>Â© 2025 BE Pilot â Solution de gestion pour installateurs de cuisines professionnelles</p>
 </div>
 </footer>
 
 <script>
-// Scroll nav shadow
-const nav=document.getElementById('nav');
-window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>10)});
+// ===== PARTICLE CANVAS =====
+(function(){
+const canvas=document.getElementById('particles');
+const ctx=canvas.getContext('2d');
+let w,h,particles=[];
+function resize(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight}
+window.addEventListener('resize',resize);resize();
 
-// Burger menu
-const burger=document.getElementById('burger');
-const navLinks=document.getElementById('navLinks');
-burger.addEventListener('click',()=>{navLinks.classList.toggle('open');burger.classList.toggle('active')});
-navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navLinks.classList.remove('open')));
+class Particle{
+constructor(){this.reset()}
+reset(){
+this.x=Math.random()*w;
+this.y=Math.random()*h;
+this.size=Math.random()*2+0.5;
+this.speedX=(Math.random()-0.5)*0.3;
+this.speedY=(Math.random()-0.5)*0.3;
+this.opacity=Math.random()*0.5+0.1;
+this.color=Math.random()>0.5?'0,212,255':'124,58,237';
+this.pulse=Math.random()*Math.PI*2;
+this.pulseSpeed=Math.random()*0.02+0.01;
+}
+update(){
+this.x+=this.speedX;this.y+=this.speedY;
+this.pulse+=this.pulseSpeed;
+if(this.x<0||this.x>w||this.y<0||this.y>h)this.reset();
+}
+draw(){
+const o=this.opacity*(0.5+0.5*Math.sin(this.pulse));
+ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+ctx.fillStyle='rgba('+this.color+','+o+')';ctx.fill();
+if(this.size>1.2){ctx.beginPath();ctx.arc(this.x,this.y,this.size*3,0,Math.PI*2);
+ctx.fillStyle='rgba('+this.color+','+(o*0.15)+')';ctx.fill();}
+}
+}
+const count=Math.min(120,Math.floor(w*h/12000));
+for(let i=0;i<count;i++)particles.push(new Particle());
 
-// Fade in on scroll
-const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})},{threshold:0.15,rootMargin:'0px 0px -40px 0px'});
-document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+function drawLines(){
+for(let i=0;i<particles.length;i++){
+for(let j=i+1;j<particles.length;j++){
+const dx=particles[i].x-particles[j].x;const dy=particles[i].y-particles[j].y;
+const dist=Math.sqrt(dx*dx+dy*dy);
+if(dist<120){
+ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);
+ctx.lineTo(particles[j].x,particles[j].y);
+ctx.strokeStyle='rgba(0,212,255,'+(0.03*(1-dist/120))+')';
+ctx.lineWidth=0.5;ctx.stroke();
+}
+}
+}
+}
+function animate(){
+ctx.clearRect(0,0,w,h);
+particles.forEach(p=>{p.update();p.draw()});
+drawLines();
+requestAnimationFrame(animate);
+}
+animate();
+})();
 
-// Smooth scroll
-document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})});
+// ===== NAVBAR SCROLL =====
+(function(){
+const nav=document.getElementById('navbar');
+let ticking=false;
+window.addEventListener('scroll',function(){
+if(!ticking){requestAnimationFrame(function(){
+nav.classList.toggle('scrolled',window.scrollY>50);ticking=false;});ticking=true;}
+});
+})();
 
-// Counter animation
-function animateCounters(){
-document.querySelectorAll('.roi-value').forEach(el=>{
-const text=el.textContent;const match=text.match(/([+-]?)(\d+)(.*)/);
-if(!match)return;
-const prefix=match[1],target=parseInt(match[2]),suffix=match[3];
-let current=0;const step=Math.max(1,Math.floor(target/40));
-const timer=setInterval(()=>{current+=step;if(current>=target){current=target;clearInterval(timer)}el.textContent=prefix+current+suffix},30);
-});}
-const roiSection=document.getElementById('roi');
-const roiObserver=new IntersectionObserver((entries)=>{if(entries[0].isIntersecting){animateCounters();roiObserver.unobserve(roiSection)}},{threshold:0.3});
-roiObserver.observe(roiSection);
+// ===== SCROLL REVEAL =====
+(function(){
+const reveals=document.querySelectorAll('.reveal,.reveal-left,.reveal-scale');
+const observer=new IntersectionObserver(function(entries){
+entries.forEach(function(entry){
+if(entry.isIntersecting){entry.target.classList.add('active');observer.unobserve(entry.target);}
+});
+},{threshold:0.15,rootMargin:'0px 0px -40px 0px'});
+reveals.forEach(function(el){observer.observe(el)});
+})();
+
+// ===== ANIMATED COUNTERS =====
+(function(){
+const counters=document.querySelectorAll('.counter');
+const observer=new IntersectionObserver(function(entries){
+entries.forEach(function(entry){
+if(entry.isIntersecting){
+const el=entry.target;
+const target=parseInt(el.getAttribute('data-target'));
+const duration=2000;
+const start=performance.now();
+function step(now){
+const elapsed=now-start;
+const progress=Math.min(elapsed/duration,1);
+const eased=1-Math.pow(1-progress,4);
+el.textContent=Math.floor(eased*target);
+if(progress<1)requestAnimationFrame(step);
+else el.textContent=target;
+}
+requestAnimationFrame(step);
+observer.unobserve(el);
+}
+});
+},{threshold:0.5});
+counters.forEach(function(c){observer.observe(c)});
+})();
+
+// ===== HERO STAT COUNTERS (with suffix) =====
+(function(){
+document.querySelectorAll('[data-target][data-suffix]').forEach(function(el){
+if(el.classList.contains('counter'))return;
+const observer=new IntersectionObserver(function(entries){
+entries.forEach(function(entry){
+if(entry.isIntersecting){
+const target=parseInt(el.getAttribute('data-target'));
+const suffix=el.getAttribute('data-suffix');
+const duration=2200;
+const start=performance.now();
+function step(now){
+const elapsed=now-start;
+const progress=Math.min(elapsed/duration,1);
+const eased=1-Math.pow(1-progress,4);
+el.textContent=Math.floor(eased*target)+suffix;
+if(progress<1)requestAnimationFrame(step);
+else el.textContent=target+suffix;
+}
+requestAnimationFrame(step);
+observer.unobserve(el);
+}
+});
+},{threshold:0.5});
+observer.observe(el);
+});
+})();
+
+// ===== SMOOTH SCROLL =====
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+a.addEventListener('click',function(e){
+e.preventDefault();
+const target=document.querySelector(this.getAttribute('href'));
+if(target){target.scrollIntoView({behavior:'smooth',block:'start'});}
+document.querySelector('.nav-links')?.classList.remove('open');
+});
+});
 </script>
 </body>
 </html>
